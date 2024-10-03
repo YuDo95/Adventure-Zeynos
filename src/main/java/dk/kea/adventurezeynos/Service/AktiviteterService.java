@@ -10,12 +10,8 @@ import java.util.List;
 @Service
 public class AktiviteterService {
 
-    private final AktiviteterRepository aktiviteterRepository;
-
     @Autowired
-    public AktiviteterService(AktiviteterRepository aktiviteterRepository) {
-        this.aktiviteterRepository = aktiviteterRepository;
-    }
+    private AktiviteterRepository aktiviteterRepository;
 
     public List<Aktiviteter> findAll() {
         return aktiviteterRepository.findAll();
@@ -25,8 +21,8 @@ public class AktiviteterService {
         return aktiviteterRepository.findById(id);
     }
 
-    public Aktiviteter save(Aktiviteter aktiviteter) {
-        return aktiviteterRepository.save(aktiviteter);
+    public void save(Aktiviteter aktivitet) {
+        aktiviteterRepository.save(aktivitet);
     }
 
     public void deleteById(int id) {
