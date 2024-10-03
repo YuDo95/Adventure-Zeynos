@@ -38,6 +38,3 @@ public class InstruktørerController {
     }
 
 }
-
-}
-
