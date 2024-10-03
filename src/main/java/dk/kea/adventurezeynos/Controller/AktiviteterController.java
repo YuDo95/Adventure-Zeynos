@@ -14,15 +14,19 @@ import java.util.List;
 @Controller
 public class AktiviteterController {
 
-    @Autowired
-    private AktiviteterService aktiviteterService;
+    private final AktiviteterService aktiviteterService;
+    private final InstruktørerService instruktørerService;
 
     @Autowired
-    private InstruktørerService instruktørerService; // Inject the instructors service
+    public AktiviteterController(AktiviteterService aktiviteterService, InstruktørerService instruktørerService) {
+        this.aktiviteterService = aktiviteterService;
+        this.instruktørerService = instruktørerService;
+    }
 
     @GetMapping("/aktiviteter")
     public String getAllAktiviteter(Model model) {
-        model.addAttribute("aktiviteter", aktiviteterService.findAll());
+        List<Aktiviteter> aktiviteter = aktiviteterService.findAll();
+        model.addAttribute("aktiviteter", aktiviteter);
         List<Instruktører> instruktører = instruktørerService.findAll(); // Fetch all instructors
         model.addAttribute("instruktører", instruktører); // Add instructors to the model
         return "aktiviteter"; // Make sure this view exists
@@ -30,21 +34,37 @@ public class AktiviteterController {
 
     @GetMapping("/aktiviteter/{id}")
     public String getAktivitetById(@PathVariable int id, Model model) {
-        model.addAttribute("aktivitet", aktiviteterService.findById(id));
+        Aktiviteter aktivitet = aktiviteterService.findById(id);
+        model.addAttribute("aktivitet", aktivitet);
         return "aktivitet-detail"; // Use a separate view for aktivitet details if needed
     }
 
-    @PostMapping("/aktiviteter")
-    public String createAktivitet(@ModelAttribute Aktiviteter aktivitet, @RequestParam int instruktørId) {
-        aktivitet.setId(instruktørId); // Set the instructor ID from the form
-        aktiviteterService.save(aktivitet);
-        return "redirect:/aktiviteter";
+    @GetMapping("/create")
+    public String createAktivitetForm(Model model) {
+        model.addAttribute("aktivitet", new Aktiviteter());
+        model.addAttribute("instruktører", instruktørerService.findAll()); // Pass the list of instructors to the form
+        return "create-aktivitet"; // Thymeleaf template for creating a new activity
     }
 
+    @PostMapping("/create")
+    public String createAktivitetSubmit(@RequestParam("navn") String navn, @RequestParam("instruktørId") int instruktørId) {
+        // Fetch the selected instructor
+        Instruktører instruktør = instruktørerService.findById(instruktørId);
 
-    @PostMapping("/aktiviteter/{id}")
+        // Create a new activity and set its fields
+        Aktiviteter newAktivitet = new Aktiviteter();
+        newAktivitet.setNavn(navn);
+        newAktivitet.setInstruktør(instruktør);
+
+        // Save the new activity
+        aktiviteterService.save(newAktivitet);
+
+        return "redirect:/aktiviteter"; // Redirect back to the activities list after creation
+    }
+
+    @PostMapping("/{id}/delete")
     public String deleteAktivitet(@PathVariable int id) {
         aktiviteterService.deleteById(id);
-        return "redirect:/aktiviteter";
+        return "redirect:/aktiviteter"; // Redirect back to the activities list after deletion
     }
 }
