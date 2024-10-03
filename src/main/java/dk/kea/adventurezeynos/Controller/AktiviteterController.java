@@ -1,9 +1,9 @@
 package dk.kea.adventurezeynos.Controller;
 
 import dk.kea.adventurezeynos.Model.Aktiviteter;
-import dk.kea.adventurezeynos.Model.Instruktører;
+import dk.kea.adventurezeynos.Model.Instruktører; // Make sure you have this import
 import dk.kea.adventurezeynos.Service.AktiviteterService;
-import dk.kea.adventurezeynos.Service.InstruktørerService;
+import dk.kea.adventurezeynos.Service.InstruktørerService; // Import the service for instructors
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/aktiviteter")
 public class AktiviteterController {
 
     private final AktiviteterService aktiviteterService;
@@ -24,23 +23,22 @@ public class AktiviteterController {
         this.instruktørerService = instruktørerService;
     }
 
-    // Method to display all activities
-    @GetMapping
+    @GetMapping("/aktiviteter")
     public String getAllAktiviteter(Model model) {
         List<Aktiviteter> aktiviteter = aktiviteterService.findAll();
         model.addAttribute("aktiviteter", aktiviteter);
-        return "aktiviteter"; // Thymeleaf template to render the activities
+        List<Instruktører> instruktører = instruktørerService.findAll(); // Fetch all instructors
+        model.addAttribute("instruktører", instruktører); // Add instructors to the model
+        return "aktiviteter"; // Make sure this view exists
     }
 
-    // Method to view a specific activity by ID
-    @GetMapping("/{id}")
+    @GetMapping("/aktiviteter/{id}")
     public String getAktivitetById(@PathVariable int id, Model model) {
         Aktiviteter aktivitet = aktiviteterService.findById(id);
         model.addAttribute("aktivitet", aktivitet);
-        return "view-aktivitet"; // Thymeleaf template to view a single activity
+        return "aktivitet-detail"; // Use a separate view for aktivitet details if needed
     }
 
-    // Display form for creating a new activity
     @GetMapping("/create")
     public String createAktivitetForm(Model model) {
         model.addAttribute("aktivitet", new Aktiviteter());
@@ -48,7 +46,6 @@ public class AktiviteterController {
         return "create-aktivitet"; // Thymeleaf template for creating a new activity
     }
 
-    // Handle form submission for creating a new activity
     @PostMapping("/create")
     public String createAktivitetSubmit(@RequestParam("navn") String navn, @RequestParam("instruktørId") int instruktørId) {
         // Fetch the selected instructor
@@ -65,7 +62,6 @@ public class AktiviteterController {
         return "redirect:/aktiviteter"; // Redirect back to the activities list after creation
     }
 
-    // Method to delete an activity by ID
     @PostMapping("/{id}/delete")
     public String deleteAktivitet(@PathVariable int id) {
         aktiviteterService.deleteById(id);
