@@ -3,47 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Aktiviteter</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <h1>Aktiviteter</h1>
 
-<h2>Create New Aktivitet</h2>
+<h2>Opret Ny Aktivitet</h2>
 <form action="/aktiviteter" method="post">
-    <label for="navn">Navn:</label>
-    <input type="text" name="navn" id="navn" placeholder="Navn" required>
+    <label for="navn">Aktivitet Navn:</label>
+    <input type="text" name="navn" id="navn" required>
 
-    <label for="instruktørId">Vælg Instruktør:</label>
+    <label for="instruktørId">Instruktør:</label>
     <select name="instruktørId" id="instruktørId" required>
-        <option value="" disabled selected>-- Vælg Instruktør --</option>
-        <tr th:each="instruktør : ${instruktører}">
-            <option th:value="${instruktør.id}" th:text="${instruktør.navn}"></option>
-        </tr>
+        <option value="">--Vælg Instruktør--</option>
+        <option th:each="instruktør : ${instruktører}" th:value="${instruktør.id}" th:text="${instruktør.navn}"></option>
     </select>
 
-    <button type="submit">Create</button>
+    <button type="submit">Opret</button>
 </form>
 
-<h2>Existing Aktiviteter</h2>
+<h2>Eksisterende Aktiviteter</h2>
 <table>
     <tr>
         <th>ID</th>
         <th>Navn</th>
-        <th>Instruktør</th>
-        <th>Actions</th>
+        <th>Instruktør Navn</th>
+        <th>Handlinger</th>
     </tr>
     <tr th:each="aktivitet : ${aktiviteter}">
         <td th:text="${aktivitet.id}"></td>
         <td th:text="${aktivitet.navn}"></td>
-        <td th:text="${aktivitet.instruktørNavn}"></td>
+        <td th:text="${aktivitet.instruktør.navn}"></td>
         <td>
-            <a th:href="@{/aktiviteter/{id}(id=${aktivitet.id})}">View</a>
-            <form th:action="@{/aktiviteter/{id}(id=${aktivitet.id})}" method="post" style="display:inline;">
+            <a th:href="@{/aktiviteter/{id}(id=${aktivitet.id})}">Vis</a>
+            <form th:action="@{/aktiviteter/{id}/delete(id=${aktivitet.id})}" method="post" style="display:inline;">
                 <input type="hidden" name="_method" value="delete"/>
-                <button type="submit">Delete</button>
+                <button type="submit" onclick="return confirm('Er du sikker på, at du vil slette denne aktivitet?');">Slet</button>
             </form>
         </td>
     </tr>
 </table>
+
 </body>
 </html>
