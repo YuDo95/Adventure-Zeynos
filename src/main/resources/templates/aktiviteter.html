@@ -8,6 +8,23 @@
 <body>
 <h1>Aktiviteter</h1>
 
+<h2>Create New Aktivitet</h2>
+<form action="/aktiviteter" method="post">
+    <label for="navn">Navn:</label>
+    <input type="text" name="navn" id="navn" placeholder="Navn" required>
+
+    <label for="instruktørId">Vælg Instruktør:</label>
+    <select name="instruktørId" id="instruktørId" required>
+        <option value="" disabled selected>-- Vælg Instruktør --</option>
+        <tr th:each="instruktør : ${instruktører}">
+            <option th:value="${instruktør.id}" th:text="${instruktør.navn}"></option>
+        </tr>
+    </select>
+
+    <button type="submit">Create</button>
+</form>
+
+<h2>Existing Aktiviteter</h2>
 <table>
     <tr>
         <th>ID</th>
@@ -18,12 +35,9 @@
     <tr th:each="aktivitet : ${aktiviteter}">
         <td th:text="${aktivitet.id}"></td>
         <td th:text="${aktivitet.navn}"></td>
-        <td th:text="${aktivitet.instruktør.id}"></td>
+        <td th:text="${aktivitet.instruktørNavn}"></td>
         <td>
             <a th:href="@{/aktiviteter/{id}(id=${aktivitet.id})}">View</a>
-            <form th:action="@{/aktiviteter/{id}(id=${aktivitet.id})}" method="post" style="display:inline;">
-                <button type="submit">Update</button>
-            </form>
             <form th:action="@{/aktiviteter/{id}(id=${aktivitet.id})}" method="post" style="display:inline;">
                 <input type="hidden" name="_method" value="delete"/>
                 <button type="submit">Delete</button>
@@ -31,21 +45,5 @@
         </td>
     </tr>
 </table>
-
-<h2>Create New Aktivitet</h2>
-<form action="/aktiviteter" method="post">
-    <label for="navn">Navn:</label>
-    <input type="text" name="navn" id="navn" placeholder="Navn" required>
-
-    <label for="instruktørId">Instruktør:</label>
-    <select name="instruktørId" id="instruktørId" required>
-        <option value="">Vælg Instruktør</option>
-        <tr th:each="instruktør : ${instruktører}">
-            <option th:value="${instruktør.id}" th:text="${instruktør.navn}"></option>
-        </tr>
-    </select>
-
-    <button type="submit">Create</button>
-</form>
 </body>
 </html>
