@@ -24,39 +24,51 @@ public class AktiviteterController {
         this.instruktørerService = instruktørerService;
     }
 
-
+    // Method to display all activities
     @GetMapping
-    public List<Aktiviteter> getAllAktiviteter() {
-        return aktiviteterService.findAll();
+    public String getAllAktiviteter(Model model) {
+        List<Aktiviteter> aktiviteter = aktiviteterService.findAll();
+        model.addAttribute("aktiviteter", aktiviteter);
+        return "aktiviteter"; // Thymeleaf template to render the activities
     }
 
+    // Method to view a specific activity by ID
     @GetMapping("/{id}")
-    public Aktiviteter getAktivitetById(@PathVariable int id) {
-        return aktiviteterService.findById(id);
+    public String getAktivitetById(@PathVariable int id, Model model) {
+        Aktiviteter aktivitet = aktiviteterService.findById(id);
+        model.addAttribute("aktivitet", aktivitet);
+        return "view-aktivitet"; // Thymeleaf template to view a single activity
     }
 
-    @PostMapping
-    public Aktiviteter createAktivitet(@RequestBody Aktiviteter aktiviteter) {
-        return aktiviteterService.save(aktiviteter);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteAktivitet(@PathVariable int id) {
-        aktiviteterService.deleteById(id);
-    }
-
-
+    // Display form for creating a new activity
     @GetMapping("/create")
     public String createAktivitetForm(Model model) {
         model.addAttribute("aktivitet", new Aktiviteter());
-        model.addAttribute("instruktørerList", instruktørerService.findAll());
-        return "create-aktivitet";
+        model.addAttribute("instruktører", instruktørerService.findAll()); // Pass the list of instructors to the form
+        return "create-aktivitet"; // Thymeleaf template for creating a new activity
     }
 
-    // Handling submission
+    // Handle form submission for creating a new activity
     @PostMapping("/create")
-    public String createAktivitetSubmit(@ModelAttribute Aktiviteter aktivitet) {
-        aktiviteterService.save(aktivitet);
-        return "redirect:/aktiviteter";
+    public String createAktivitetSubmit(@RequestParam("navn") String navn, @RequestParam("instruktørId") int instruktørId) {
+        // Fetch the selected instructor
+        Instruktører instruktør = instruktørerService.findById(instruktørId);
+
+        // Create a new activity and set its fields
+        Aktiviteter newAktivitet = new Aktiviteter();
+        newAktivitet.setNavn(navn);
+        newAktivitet.setInstruktør(instruktør);
+
+        // Save the new activity
+        aktiviteterService.save(newAktivitet);
+
+        return "redirect:/aktiviteter"; // Redirect back to the activities list after creation
+    }
+
+    // Method to delete an activity by ID
+    @PostMapping("/{id}/delete")
+    public String deleteAktivitet(@PathVariable int id) {
+        aktiviteterService.deleteById(id);
+        return "redirect:/aktiviteter"; // Redirect back to the activities list after deletion
     }
 }
