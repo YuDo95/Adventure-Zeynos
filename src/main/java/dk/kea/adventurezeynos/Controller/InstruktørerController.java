@@ -36,4 +36,8 @@ public class InstruktørerController {
         instruktørerService.deleteById(id);
         return "redirect:/instruktører";
     }
+
 }
+
+}
+
