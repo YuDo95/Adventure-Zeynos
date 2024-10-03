@@ -41,4 +41,7 @@ public class InstruktørerRepository {
         instruktør.setNavn(rs.getString("navn"));
         return instruktør;
     }
+
+}
+
 }
