@@ -1,4 +1,5 @@
 package dk.kea.adventurezeynos.Service;
+
 import dk.kea.adventurezeynos.Model.Instruktører;
 import dk.kea.adventurezeynos.Repository.InstruktørerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,8 @@ import java.util.List;
 @Service
 public class InstruktørerService {
 
-    private final InstruktørerRepository instruktørerRepository;
-
     @Autowired
-    public InstruktørerService(InstruktørerRepository instruktørerRepository) {
-        this.instruktørerRepository = instruktørerRepository;
-    }
+    private InstruktørerRepository instruktørerRepository;
 
     public List<Instruktører> findAll() {
         return instruktørerRepository.findAll();
@@ -24,8 +21,8 @@ public class InstruktørerService {
         return instruktørerRepository.findById(id);
     }
 
-    public Instruktører save(Instruktører instruktører) {
-        return instruktørerRepository.save(instruktører);
+    public void save(Instruktører instruktører) {
+        instruktørerRepository.save(instruktører);
     }
 
     public void deleteById(int id) {
