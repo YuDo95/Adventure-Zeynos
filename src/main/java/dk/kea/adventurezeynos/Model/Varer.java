@@ -1,9 +1,17 @@
 package dk.kea.adventurezeynos.Model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "varer")  // Maps to the "varer" table in the database
 public class Varer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment primary key
     private int id;
+
     private String navn;
+
     private Double pris;
 
     // Constructors

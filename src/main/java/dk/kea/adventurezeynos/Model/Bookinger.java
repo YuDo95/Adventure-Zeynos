@@ -1,14 +1,30 @@
 package dk.kea.adventurezeynos.Model;
 
+import jakarta.persistence.*;
+
+
 import java.util.Date;
 
+@Entity
+@Table(name = "bookinger")  // Maps to the "bookinger" table in the database
 public class Bookinger {
 
-    private int id; // Changed from Long to int
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "aktivitet_id", referencedColumnName = "id")
     private Aktiviteter aktivitet;
+
+    @ManyToOne
+    @JoinColumn(name = "kunde_id", referencedColumnName = "id")
     private Kunder kunde;
+
+    @Temporal(TemporalType.DATE)
     private Date dato;
-    private int antalDeltagere; // Changed from Integer to int
+
+    private int antalDeltagere;
 
     // Constructors
     public Bookinger() {}

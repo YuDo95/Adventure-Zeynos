@@ -1,9 +1,9 @@
 package dk.kea.adventurezeynos.Repository;
 
-import dk.kea.adventurezeynos.Model.Aktiviteter;
+import dk.kea.adventurezeynos.Model.Kunder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AktiviteterRepository extends JpaRepository<Aktiviteter, Integer> {
+public interface KunderRepository extends JpaRepository<Kunder, Integer> {
 }

@@ -1,10 +1,23 @@
 package dk.kea.adventurezeynos.Model;
 
-public class Aktiviteter {
-    private int id;
-    private String navn;
-    private Instruktører instruktør; // Store the instructor object directly
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "aktiviteter")  // Specify the table name if different from the class name
+public class Aktiviteter {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String navn;
+
+    @ManyToOne  // Many activities can be associated with one instructor
+    @JoinColumn(name = "instruktor_id", referencedColumnName = "id")
+    private Instruktører instruktør;
+
+    // Constructors
     public Aktiviteter() {}
 
     public Aktiviteter(int id, String navn, Instruktører instruktør) {
@@ -13,6 +26,7 @@ public class Aktiviteter {
         this.instruktør = instruktør;
     }
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
