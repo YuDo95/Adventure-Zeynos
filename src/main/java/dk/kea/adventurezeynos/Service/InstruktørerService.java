@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstruktørerService {
@@ -18,11 +19,12 @@ public class InstruktørerService {
     }
 
     public Instruktører findById(int id) {
-        return instruktørerRepository.findById(id);
+        Optional<Instruktører> instruktør = instruktørerRepository.findById(id);
+        return instruktør.orElse(null);
     }
 
-    public void save(Instruktører instruktører) {
-        instruktørerRepository.save(instruktører);
+    public Instruktører save(Instruktører instruktør) {
+        return instruktørerRepository.save(instruktør);
     }
 
     public void deleteById(int id) {

@@ -8,33 +8,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/instruktører")
 public class InstruktørerController {
 
     @Autowired
     private InstruktørerService instruktørerService;
 
-    @GetMapping("/instruktører")
+    @GetMapping
     public String getAllInstruktører(Model model) {
         model.addAttribute("instruktører", instruktørerService.findAll());
         return "instruktører";
     }
 
-    @GetMapping("/instruktører/{id}")
+    @GetMapping("/{id}")
     public String getInstruktørById(@PathVariable int id, Model model) {
         model.addAttribute("instruktør", instruktørerService.findById(id));
-        return "instruktør-detail"; // Use a separate view for instruktør details if needed
+        return "instruktør-detail";
     }
 
-    @PostMapping("/instruktører")
+    @PostMapping
     public String createInstruktør(@ModelAttribute Instruktører instruktører) {
         instruktørerService.save(instruktører);
         return "redirect:/instruktører";
     }
 
-    @PostMapping("/instruktører/{id}")
+    @PostMapping("/{id}/delete")
     public String deleteInstruktør(@PathVariable int id) {
         instruktørerService.deleteById(id);
         return "redirect:/instruktører";
     }
-
 }

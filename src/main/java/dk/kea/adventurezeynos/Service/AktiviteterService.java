@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AktiviteterService {
@@ -18,11 +19,12 @@ public class AktiviteterService {
     }
 
     public Aktiviteter findById(int id) {
-        return aktiviteterRepository.findById(id);
+        Optional<Aktiviteter> aktivitet = aktiviteterRepository.findById(id);
+        return aktivitet.orElse(null); // Return null if not found
     }
 
-    public void save(Aktiviteter aktivitet) {
-        aktiviteterRepository.save(aktivitet);
+    public Aktiviteter save(Aktiviteter aktivitet) {
+        return aktiviteterRepository.save(aktivitet);
     }
 
     public void deleteById(int id) {

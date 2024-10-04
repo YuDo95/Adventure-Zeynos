@@ -1,11 +1,24 @@
 package dk.kea.adventurezeynos.Model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "salg")  // Map to the "salg" table in the database
 public class Salg {
 
-    private int id; // Changed from Long to int
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment primary key
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "vare_id", referencedColumnName = "id")
     private Varer vare;
+
+    @ManyToOne
+    @JoinColumn(name = "kunde_id", referencedColumnName = "id")
     private Kunder kunde;
-    private int antal; // Changed from Integer to int
+
+    private int antal;
 
     // Constructors
     public Salg() {}

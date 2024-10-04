@@ -24,18 +24,17 @@ public class AktiviteterController {
         this.instruktørerService = instruktørerService;
     }
 
-    // Display all activities and form for new activity
     @GetMapping
     public String getAllAktiviteter(Model model) {
         List<Aktiviteter> aktiviteter = aktiviteterService.findAll();
         model.addAttribute("aktiviteter", aktiviteter);
 
-        List<Instruktører> instruktører = instruktørerService.findAll(); // Fetch all instructors
-        model.addAttribute("instruktører", instruktører); // Add instructors to the model
-        return "aktiviteter"; // View template for displaying activities and form
+        List<Instruktører> instruktører = instruktørerService.findAll();
+        model.addAttribute("instruktører", instruktører);
+
+        return "aktiviteter"; // Return view to show activities
     }
 
-    // Handle form submission for creating a new activity
     @PostMapping
     public String createAktivitet(@RequestParam("navn") String navn,
                                   @RequestParam("instruktørId") int instruktørId) {
@@ -43,22 +42,20 @@ public class AktiviteterController {
 
         Aktiviteter newAktivitet = new Aktiviteter();
         newAktivitet.setNavn(navn);
-        newAktivitet.setInstruktør(instruktør); // Set the instructor
+        newAktivitet.setInstruktør(instruktør);
 
         aktiviteterService.save(newAktivitet);
 
         return "redirect:/aktiviteter";
     }
 
-    // View a single activity by ID
     @GetMapping("/{id}")
     public String getAktivitetById(@PathVariable int id, Model model) {
         Aktiviteter aktivitet = aktiviteterService.findById(id);
         model.addAttribute("aktivitet", aktivitet);
-        return "aktivitet-detail"; // View template for displaying a single activity
+        return "aktivitet-detail";
     }
 
-    // Handle deleting an activity by ID
     @PostMapping("/{id}/delete")
     public String deleteAktivitet(@PathVariable int id) {
         aktiviteterService.deleteById(id);
