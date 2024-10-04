@@ -1,12 +1,10 @@
 package dk.kea.adventurezeynos.Model;
 
 public class Aktiviteter {
-
-    private int id; // Changed from Long to int
+    private int id;
     private String navn;
-    private Instruktører instruktør;
+    private Instruktører instruktør; // Store the instructor object directly
 
-    // Constructors
     public Aktiviteter() {}
 
     public Aktiviteter(int id, String navn, Instruktører instruktør) {
@@ -15,7 +13,6 @@ public class Aktiviteter {
         this.instruktør = instruktør;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

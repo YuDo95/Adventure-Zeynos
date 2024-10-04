@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instruktører</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<h1>Instruktører</h1>
+
+<h2>Create New Instruktør</h2>
+<form action="/instruktører" method="post">
+  <label for="navn">Navn:</label>
+  <input type="text" name="navn" id="navn" placeholder="Navn" required>
+
+  <button type="submit">Create</button>
+</form>
+
+<h2>Existing Instruktører</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Navn</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="instruktør : ${instruktører}">
+    <td th:text="${instruktør.id}"></td>
+    <td th:text="${instruktør.navn}"></td>
+    <td>
+      <a th:href="@{/instruktører/{id}(id=${instruktør.id})}">View</a>
+      <form th:action="@{/instruktører/{id}(id=${instruktør.id})}" method="post" style="display:inline;">
+        <button type="submit">Update</button>
+      </form>
+      <form th:action="@{/instruktører/{id}(id=${instruktør.id})}" method="post" style="display:inline;">
+        <input type="hidden" name="_method" value="delete"/>
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+</table>
+</body>
+
+</html>
+
+</html>
+
