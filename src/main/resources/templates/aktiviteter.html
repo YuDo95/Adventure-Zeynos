@@ -3,6 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Aktiviteter</title>
+    <script>
+        // Function to fetch and populate instructors in the dropdown
+        function fetchInstruktører() {
+            fetch('/api/instruktører') // Assume you have an API endpoint for fetching instructors
+                .then(response => response.json())
+                .then(data => {
+                    let instruktørSelect = document.getElementById('instruktørId');
+                    data.forEach(instruktør => {
+                        let option = document.createElement('option');
+                        option.value = instruktør.id;
+                        option.textContent = instruktør.navn;
+                        instruktørSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching instructors:', error));
+        }
+
+        // Function to fetch and display all activities
+        function fetchAktiviteter() {
+            fetch('/api/aktiviteter') // Assume you have an API endpoint for fetching activities
+                .then(response => response.json())
+                .then(data => {
+                    let aktivitetTableBody = document.getElementById('aktivitetTableBody');
+                    aktivitetTableBody.innerHTML = ''; // Clear existing content
+                    data.forEach(aktivitet => {
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${aktivitet.id}</td>
+                            <td>${aktivitet.navn}</td>
+                            <td>${aktivitet.instruktør ? aktivitet.instruktør.navn : 'No Instructor'}</td>
+                            <td>
+                                <a href="/aktiviteter/${aktivitet.id}">View</a>
+                                <form action="/aktiviteter/${aktivitet.id}/delete" method="post" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Er du sikker på, at du vil slette denne aktivitet?');">Slet</button>
+                                </form>
+                            </td>
+                        `;
+                        aktivitetTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching activities:', error));
+        }
+
+        // Call the functions when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchInstruktører();
+            fetchAktiviteter();
+        });
+    </script>
 </head>
 <body>
 <h1>Aktiviteter</h1>
@@ -15,7 +64,6 @@
     <label for="instruktørId">Instruktør:</label>
     <select name="instruktørId" id="instruktørId" required>
         <option value="">--Vælg Instruktør--</option>
-        <option th:each="instruktør : ${instruktører}" th:value="${instruktør.id}" th:text="${instruktør.navn}"></option>
     </select>
 
     <button type="submit">Opret</button>
@@ -29,18 +77,7 @@
         <th>Instruktør Navn</th>
         <th>Handlinger</th>
     </tr>
-    <tr th:each="aktivitet : ${aktiviteter}">
-        <td th:text="${aktivitet.id}"></td>
-        <td th:text="${aktivitet.navn}"></td>
-        <td th:text="${aktivitet.instruktør.navn}"></td>
-        <td>
-            <a th:href="@{/aktiviteter/{id}(id=${aktivitet.id})}">Vis</a>
-            <form th:action="@{/aktiviteter/{id}/delete(id=${aktivitet.id})}" method="post" style="display:inline;">
-                <input type="hidden" name="_method" value="delete"/>
-                <button type="submit" onclick="return confirm('Er du sikker på, at du vil slette denne aktivitet?');">Slet</button>
-            </form>
-        </td>
-    </tr>
+    <tbody id="aktivitetTableBody"></tbody>
 </table>
 
 </body>

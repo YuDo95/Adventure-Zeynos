@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salg Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, button {
+            margin-top: 5px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+<h1>Sales (Salg) Management</h1>
+
+<div id="message" class="message"></div>
+
+<h2>Create or Edit Sale</h2>
+<form id="salgForm">
+    <input type="hidden" id="salgId" name="id">
+
+    <label for="vare">Vare:</label>
+    <input type="text" id="vare" name="vare" required>
+
+    <label for="kunde">Kunde:</label>
+    <input type="text" id="kunde" name="kunde" required>
+
+    <label for="antal">Antal:</label>
+    <input type="number" id="antal" name="antal" required>
+
+    <button type="submit">Save</button>
+</form>
+
+<h2>List of Sales</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Vare</th>
+        <th>Kunde</th>
+        <th>Antal</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="salgTable">
+    <!-- JavaScript will dynamically load data here -->
+    </tbody>
+</table>
+
+<script>
+    // Load data when the page loads
+    window.onload = function() {
+        loadSalgList();
+    };
+
+    // Function to load the list of sales
+    function loadSalgList() {
+        fetch('/salg')  // Fetch data from backend (Spring Boot)
+            .then(response => response.json())
+            .then(data => {
+                const salgTable = document.getElementById('salgTable');
+                salgTable.innerHTML = ''; // Clear existing data
+
+                data.forEach(salg => {
+                    const row = salgTable.insertRow();
+                    row.insertCell(0).innerHTML = Salg.id;
+                    row.insertCell(1).innerHTML = Salg.vare;
+                    row.insertCell(2).innerHTML = Salg.kunde;
+                    row.insertCell(3).innerHTML = Salg.antal;
+                    row.insertCell(4).innerHTML = `
+                            <button onclick="editSalg(${Salg.id})">Edit</button>
+                            <button onclick="deleteSalg(${Salg.id})">Delete</button>
+                        `;
+                });
+            });
+    }
+
+    // Handle form submission for saving (create/update) sales
+    document.getElementById('salgForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent form from reloading the page
+
+        const id = document.getElementById('salgId').value;
+        const vare = document.getElementById('vare').value;
+        const kunde = document.getElementById('kunde').value;
+        const antal = document.getElementById('antal').value;
+
+        const salg = { id, vare, kunde, antal };
+
+        // Determine whether to create or update based on the presence of ID
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/salg/edit/${id}` : '/salg/save';
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Salg)
+        })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('message').innerText = 'Sale saved successfully!';
+                    document.getElementById('salgForm').reset();
+                    loadSalgList();  // Reload the list
+                } else {
+                    document.getElementById('message').innerText = 'Error saving sale!';
+                }
+            });
+    };
+
+    // Function to edit an existing sale
+    function editSalg(id) {
+        fetch(`/salg/${id}`)
+            .then(response => response.json())
+            .then(salg => {
+                document.getElementById('salgId').value = Salg.id;
+                document.getElementById('vare').value = Salg.vare;
+                document.getElementById('kunde').value = Salg.kunde;
+                document.getElementById('antal').value = Salg.antal;
+            });
+    }
+
+    // Function to delete a sale
+    function deleteSalg(id) {
+        fetch(`/salg/delete/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadSalgList();  // Reload the list after deletion
+                    document.getElementById('message').innerText = 'Sale deleted successfully!';
+                } else {
+                    document.getElementById('message').innerText = 'Error deleting sale!';
+                }
+            });
+    }
+</script>
+</body>
+</html>

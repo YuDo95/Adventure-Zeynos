@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varer</title>
+</head>
+<body>
+<h1>Varer</h1>
+
+<table id="varerTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Navn</th>
+        <th>Pris</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<h2>Create New Vare</h2>
+<form id="createVareForm">
+    <label for="navn">Navn:</label>
+    <input type="text" id="navn" name="navn" required>
+    <label for="pris">Pris:</label>
+    <input type="number" step="0.01" id="pris" name="pris" required>
+    <button type="submit">Create</button>
+</form>
+
+<script>
+    window.onload = function() {
+        loadVarer();
+    };
+
+    function loadVarer() {
+        fetch('/varer')
+            .then(response => response.json())
+            .then(data => {
+                const varerTableBody = document.querySelector("#varerTable tbody");
+                varerTableBody.innerHTML = '';
+                data.forEach(vare => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                            <td>${vare.id}</td>
+                            <td>${vare.navn}</td>
+                            <td>${vare.pris}</td>
+                            <td>
+                                <button onclick="deleteVare(${vare.id})">Delete</button>
+                            </td>
+                        `;
+                    varerTableBody.appendChild(row);
+                });
+            });
+    }
+
+    document.getElementById("createVareForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/varer/create', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+            .then(() => {
+                loadVarer();
+            });
+    });
+
+    function deleteVare(id) {
+        fetch(`/varer/delete/${id}`, {
+            method: 'POST'
+        })
+            .then(() => {
+                loadVarer();
+            });
+    }
+</script>
+</body>
+</html>
