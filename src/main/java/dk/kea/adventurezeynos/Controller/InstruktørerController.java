@@ -3,38 +3,38 @@ package dk.kea.adventurezeynos.Controller;
 import dk.kea.adventurezeynos.Model.Instruktører;
 import dk.kea.adventurezeynos.Service.InstruktørerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/instruktører")
+import java.util.List;
+
+@RestController  // Use RestController for REST APIs
+@RequestMapping("/api/instruktører")
 public class InstruktørerController {
 
     @Autowired
     private InstruktørerService instruktørerService;
 
+    // Get all instructors as JSON
     @GetMapping
-    public String getAllInstruktører(Model model) {
-        model.addAttribute("instruktører", instruktørerService.findAll());
-        return "instruktører";
+    public List<Instruktører> getAllInstruktører() {
+        return instruktørerService.findAll();
     }
 
+    // Get a single instructor by ID as JSON
     @GetMapping("/{id}")
-    public String getInstruktørById(@PathVariable int id, Model model) {
-        model.addAttribute("instruktør", instruktørerService.findById(id));
-        return "instruktør-detail";
+    public Instruktører getInstruktørById(@PathVariable int id) {
+        return instruktørerService.findById(id);
     }
 
-    @PostMapping
-    public String createInstruktør(@ModelAttribute Instruktører instruktører) {
-        instruktørerService.save(instruktører);
-        return "redirect:/instruktører";
+    // Create a new instructor
+    @PostMapping("/create")
+    public Instruktører createInstruktør(@RequestBody Instruktører instruktører) {
+        return instruktørerService.save(instruktører);
     }
 
-    @PostMapping("/{id}/delete")
-    public String deleteInstruktør(@PathVariable int id) {
+    // Delete an instructor by ID
+    @PostMapping("/delete/{id}")
+    public void deleteInstruktør(@PathVariable int id) {
         instruktørerService.deleteById(id);
-        return "redirect:/instruktører";
     }
 }
