@@ -1,172 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Management</title>
+    <title>Book en Aktivitet - AdventureXP</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f0f0f0;
+            background-image: url(https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg); ;
+            padding: 20px;
         }
         h1 {
-            color: #333;
+            text-align: center;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
+        .booking-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
-        input, button {
-            margin-top: 5px;
-        }
-        form {
+        input[type="text"], input[type="email"], input[type="date"], input[type="time"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
             margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .message {
-            color: green;
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #FFCC00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e6b800;
         }
     </style>
 </head>
 <body>
-<h1>Booking Management</h1>
 
-<div id="message" class="message"></div>
+<div class="booking-container">
+    <h1>Book en Aktivitet</h1>
+    <form id="bookingForm">
+        <label for="aktivitet">Vælg Aktivitet:</label>
+        <select id="aktivitet" name="aktivitet" required>
+            <option value="go-kart">Go-Kart</option>
+            <option value="minigolf">Minigolf</option>
+            <option value="paintball">Paintball</option>
+            <option value="sumo-wrestling">Sumo Wrestling</option>
+        </select>
 
-<h2>Create or Edit Booking</h2>
-<form id="bookingForm">
-    <input type="hidden" id="bookingId" name="id">
+        <label for="dato">Vælg Dato:</label>
+        <input type="date" id="dato" name="dato" required>
 
-    <label for="kunde">Kunde:</label>
-    <input type="text" id="kunde" name="kunde" required>
+        <label for="tid">Vælg Tid:</label>
+        <input type="time" id="tid" name="tid" required>
 
-    <label for="vare">Vare:</label>
-    <input type="text" id="vare" name="vare" required>
+        <label for="deltagere">Antal Deltagere:</label>
+        <input type="number" id="deltagere" name="deltagere" min="1" max="20" required>
 
-    <label for="dato">Dato:</label>
-    <input type="date" id="dato" name="dato" required>
+        <button type="submit">Bekræft Booking</button>
+    </form>
 
-    <label for="antal">Antal:</label>
-    <input type="number" id="antal" name="antal" required>
-
-    <button type="submit">Save</button>
-</form>
-
-<h2>List of Bookings</h2>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Kunde</th>
-        <th>Vare</th>
-        <th>Dato</th>
-        <th>Antal</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="bookingTable">
-    <!-- JavaScript will dynamically load data here -->
-    </tbody>
-</table>
+    <div id="confirmationMessage" style="display:none; margin-top: 20px;">
+        <p>Tak for din booking! Vi har modtaget din reservation.</p>
+    </div>
+</div>
 
 <script>
-    // Load data when the page loads
-    window.onload = function() {
-        loadBookingList();
-    };
+    document.getElementById('bookingForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    // Function to load the list of bookings
-    function loadBookingList() {
-        fetch('/booking')  // Fetch data from backend (Spring Boot)
-            .then(response => response.json())
-            .then(data => {
-                const bookingTable = document.getElementById('bookingTable');
-                bookingTable.innerHTML = ''; // Clear existing data
-
-                data.forEach(booking => {
-                    const row = bookingTable.insertRow();
-                    row.insertCell(0).innerHTML = booking.id;
-                    row.insertCell(1).innerHTML = booking.kunde.navn;
-                    row.insertCell(2).innerHTML = booking.vare.navn;
-                    row.insertCell(3).innerHTML = new Date(booking.dato).toLocaleDateString();
-                    row.insertCell(4).innerHTML = booking.antal;
-                    row.insertCell(5).innerHTML = `
-                            <button onclick="editBooking(${booking.id})">Edit</button>
-                            <button onclick="deleteBooking(${booking.id})">Delete</button>
-                        `;
-                });
-            });
-    }
-
-    // Handle form submission for saving (create/update) bookings
-    document.getElementById('bookingForm').onsubmit = function(event) {
-        event.preventDefault(); // Prevent form from reloading the page
-
-        const id = document.getElementById('bookingId').value;
-        const kunde = document.getElementById('kunde').value;
-        const vare = document.getElementById('vare').value;
+        const aktivitet = document.getElementById('aktivitet').value;
         const dato = document.getElementById('dato').value;
-        const antal = document.getElementById('antal').value;
+        const tid = document.getElementById('tid').value;
+        const deltagere = document.getElementById('deltagere').value;
 
-        const booking = { id, kunde, vare, dato, antal };
+        // Form data that will be sent to the server
+        const bookingData = {
+            aktivitet: aktivitet,
+            dato: dato,
+            tid: tid,
+            deltagere: deltagere
+        };
 
-        // Determine whether to create or update based on the presence of ID
-        const method = id ? 'PUT' : 'POST';
-        const url = id ? `/booking/edit/${id}` : '/booking/save';
-
-        fetch(url, {
-            method: method,
+        // Example of sending the booking data to the server (you can replace this with your own backend integration)
+        fetch('/api/book-aktivitet', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(booking)
+            body: JSON.stringify(bookingData),
         })
             .then(response => {
                 if (response.ok) {
-                    document.getElementById('message').innerText = 'Booking saved successfully!';
+                    // Clear form and show confirmation message
                     document.getElementById('bookingForm').reset();
-                    loadBookingList();  // Reload the list
+                    document.getElementById('confirmationMessage').style.display = 'block';
                 } else {
-                    document.getElementById('message').innerText = 'Error saving booking!';
+                    alert('Der opstod en fejl med din booking. Prøv igen.');
                 }
             });
-    };
-
-    // Function to edit an existing booking
-    function editBooking(id) {
-        fetch(`/booking/${id}`)
-            .then(response => response.json())
-            .then(booking => {
-                document.getElementById('bookingId').value = booking.id;
-                document.getElementById('kunde').value = booking.kunde.navn;
-                document.getElementById('vare').value = booking.vare.navn;
-                document.getElementById('dato').value = new Date(booking.dato).toISOString().substr(0, 10);
-                document.getElementById('antal').value = booking.antal;
-            });
-    }
-
-    // Function to delete a booking
-    function deleteBooking(id) {
-        fetch(`/booking/delete/${id}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    loadBookingList();  // Reload the list after deletion
-                    document.getElementById('message').innerText = 'Booking deleted successfully!';
-                } else {
-                    document.getElementById('message').innerText = 'Error deleting booking!';
-                }
-            });
-    }
+    });
 </script>
+
 </body>
 </html>

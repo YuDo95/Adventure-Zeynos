@@ -3,163 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salg Management</title>
+    <title>Salg - Adventure Equipment</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f0f0f0;
+            padding: 20px;
         }
         h1 {
-            color: #333;
+            text-align: center;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: left;
+        .salg-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
-        input, button {
-            margin-top: 5px;
-        }
-        form {
+        input[type="text"], input[type="email"], input[type="tel"], select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
             margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .message {
-            color: green;
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #FFCC00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e6b800;
         }
     </style>
 </head>
 <body>
-<h1>Sales (Salg) Management</h1>
 
-<div id="message" class="message"></div>
+<div class="salg-container">
+    <h1>Salg af Udstyr</h1>
+    <form id="salgForm">
+        <label for="kundeNavn">Kunde Navn:</label>
+        <input type="text" id="kundeNavn" name="kundeNavn" required>
 
-<h2>Create or Edit Sale</h2>
-<form id="salgForm">
-    <input type="hidden" id="salgId" name="id">
+        <label for="kundeEmail">Kunde Email:</label>
+        <input type="email" id="kundeEmail" name="kundeEmail" required>
 
-    <label for="vare">Vare:</label>
-    <input type="text" id="vare" name="vare" required>
+        <label for="kundeTelefon">Kunde Telefon:</label>
+        <input type="tel" id="kundeTelefon" name="kundeTelefon" required>
 
-    <label for="kunde">Kunde:</label>
-    <input type="text" id="kunde" name="kunde" required>
+        <label for="vare">Vælg Vare:</label>
+        <select id="vare" name="vare" required>
+            <!-- The product options will be dynamically filled from the backend -->
+        </select>
 
-    <label for="antal">Antal:</label>
-    <input type="number" id="antal" name="antal" required>
+        <label for="antal">Antal:</label>
+        <input type="number" id="antal" name="antal" required>
 
-    <button type="submit">Save</button>
-</form>
+        <button type="submit">Bekræft Salg</button>
+    </form>
 
-<h2>List of Sales</h2>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Vare</th>
-        <th>Kunde</th>
-        <th>Antal</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="salgTable">
-    <!-- JavaScript will dynamically load data here -->
-    </tbody>
-</table>
+    <div id="confirmationMessage" style="display:none; margin-top: 20px;">
+        <p>Tak for dit køb! Vi har modtaget din bestilling.</p>
+    </div>
+</div>
 
 <script>
-    // Load data when the page loads
-    window.onload = function() {
-        loadSalgList();
-    };
-
-    // Function to load the list of sales
-    function loadSalgList() {
-        fetch('/salg')  // Fetch data from backend (Spring Boot)
+    // Load available products (varer) from the backend
+    function loadVarer() {
+        fetch('/api/varer') // Assuming you have an API endpoint to get all products
             .then(response => response.json())
             .then(data => {
-                const salgTable = document.getElementById('salgTable');
-                salgTable.innerHTML = ''; // Clear existing data
-
-                data.forEach(salg => {
-                    const row = salgTable.insertRow();
-                    row.insertCell(0).innerHTML = Salg.id;
-                    row.insertCell(1).innerHTML = Salg.vare;
-                    row.insertCell(2).innerHTML = Salg.kunde;
-                    row.insertCell(3).innerHTML = Salg.antal;
-                    row.insertCell(4).innerHTML = `
-                            <button onclick="editSalg(${Salg.id})">Edit</button>
-                            <button onclick="deleteSalg(${Salg.id})">Delete</button>
-                        `;
+                const vareSelect = document.getElementById('vare');
+                data.forEach(vare => {
+                    const option = document.createElement('option');
+                    option.value = vare.id;
+                    option.textContent = vare.navn + ' - ' + vare.pris + ' DKK';
+                    vareSelect.appendChild(option);
                 });
             });
     }
 
-    // Handle form submission for saving (create/update) sales
-    document.getElementById('salgForm').onsubmit = function(event) {
-        event.preventDefault(); // Prevent form from reloading the page
+    // Submit the sales form
+    document.getElementById('salgForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        const id = document.getElementById('salgId').value;
-        const vare = document.getElementById('vare').value;
-        const kunde = document.getElementById('kunde').value;
-        const antal = document.getElementById('antal').value;
+        const salgData = {
+            kundeNavn: document.getElementById('kundeNavn').value,
+            kundeEmail: document.getElementById('kundeEmail').value,
+            kundeTelefon: document.getElementById('kundeTelefon').value,
+            vare: document.getElementById('vare').value,
+            antal: document.getElementById('antal').value
+        };
 
-        const salg = { id, vare, kunde, antal };
-
-        // Determine whether to create or update based on the presence of ID
-        const method = id ? 'PUT' : 'POST';
-        const url = id ? `/salg/edit/${id}` : '/salg/save';
-
-        fetch(url, {
-            method: method,
+        fetch('/api/salg', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(Salg)
+            body: JSON.stringify(salgData),
         })
             .then(response => {
                 if (response.ok) {
-                    document.getElementById('message').innerText = 'Sale saved successfully!';
-                    document.getElementById('salgForm').reset();
-                    loadSalgList();  // Reload the list
+                    document.getElementById('salgForm').reset(); // Clear form
+                    document.getElementById('confirmationMessage').style.display = 'block'; // Show confirmation
                 } else {
-                    document.getElementById('message').innerText = 'Error saving sale!';
+                    alert('Der opstod en fejl under salget. Prøv igen.');
                 }
             });
-    };
+    });
 
-    // Function to edit an existing sale
-    function editSalg(id) {
-        fetch(`/salg/${id}`)
-            .then(response => response.json())
-            .then(salg => {
-                document.getElementById('salgId').value = Salg.id;
-                document.getElementById('vare').value = Salg.vare;
-                document.getElementById('kunde').value = Salg.kunde;
-                document.getElementById('antal').value = Salg.antal;
-            });
-    }
-
-    // Function to delete a sale
-    function deleteSalg(id) {
-        fetch(`/salg/delete/${id}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    loadSalgList();  // Reload the list after deletion
-                    document.getElementById('message').innerText = 'Sale deleted successfully!';
-                } else {
-                    document.getElementById('message').innerText = 'Error deleting sale!';
-                }
-            });
-    }
+    // Load the available products when the page loads
+    window.onload = loadVarer;
 </script>
+
 </body>
 </html>
