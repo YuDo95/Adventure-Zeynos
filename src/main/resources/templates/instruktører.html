@@ -2,143 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Instruktører</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f4f4f4;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-
-    input, button {
-      margin-top: 5px;
-      padding: 5px 10px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-
-    button.delete {
-      background-color: #ff6b6b;
-    }
-
-    form {
-      margin-bottom: 20px;
-    }
-  </style>
+  <title>Instruktører</title>
 </head>
 <body>
 
-<h1>Manage Instruktører</h1>
+<h1>Instruktører</h1>
 
-<!-- Form to create a new instructor -->
 <h2>Create New Instruktør</h2>
-<form id="createInstruktørForm">
+<form action="/instruktører" method="post">
   <label for="navn">Navn:</label>
-  <input type="text" id="navn" name="navn" required>
+  <input type="text" name="navn" id="navn" placeholder="Navn" required>
   <button type="submit">Create</button>
 </form>
 
-<!-- Table for displaying existing instructors -->
 <h2>Existing Instruktører</h2>
 <table>
-  <thead>
   <tr>
     <th>ID</th>
     <th>Navn</th>
     <th>Actions</th>
   </tr>
-  </thead>
   <tbody id="instruktørTableBody">
+  <tr th:each="instruktør : ${instruktører}">
+    <td th:text="${instruktør.id}"></td>
+    <td th:text="${instruktør.navn}"></td>
+    <td>
+      <a th:href="@{/instruktører/{id}(id=${instruktør.id})}">View</a>
+      <form th:action="@{/instruktører/{id}/delete(id=${instruktør.id})}" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
   </tbody>
 </table>
-
-<script>
-  // Load instructors when the page loads
-  window.onload = function () {
-    loadInstruktører();
-  };
-
-  // Fetch instructors from the backend and display them in the table
-  function loadInstruktører() {
-    fetch('/api/instruktører')
-            .then(response => response.json())
-            .then(data => {
-              const instruktørTableBody = document.getElementById('instruktørTableBody');
-              instruktørTableBody.innerHTML = ''; // Clear the table body
-
-              data.forEach(instruktør => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                        <td>${instruktør.id}</td>
-                        <td>${instruktør.navn}</td>
-                        <td>
-                            <button class="delete" onclick="deleteInstruktør(${instruktør.id})">Delete</button>
-                        </td>
-                    `;
-                instruktørTableBody.appendChild(row);
-              });
-            });
-  }
-
-  // Handle form submission for creating a new instructor
-  document.getElementById('createInstruktørForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const navn = document.getElementById('navn').value;
-
-    // Create a new instructor via a POST request
-    fetch('/api/instruktører/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ navn })
-    })
-            .then(() => {
-              document.getElementById('createInstruktørForm').reset(); // Clear the form
-              loadInstruktører(); // Reload the list
-            });
-  });
-
-  // Function to delete an instructor
-  function deleteInstruktør(id) {
-    fetch(`/api/instruktører/delete/${id}`, {
-      method: 'POST'
-    })
-            .then(() => {
-              loadInstruktører(); // Reload the list after deletion
-            });
-  }
-</script>
 
 </body>
 </html>
