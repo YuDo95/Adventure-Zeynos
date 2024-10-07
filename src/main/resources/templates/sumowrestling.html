@@ -47,62 +47,6 @@
             border-radius: 10px;
         }
 
-        /* Booking Form */
-        .booking-form {
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: #fff; /* White background for the form */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
-        }
-
-        .booking-form label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        .booking-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .booking-form button {
-            width: 100%;
-            padding: 15px;
-            background-color: #FFCC00;
-            color: #333;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .booking-form button:hover {
-            background-color: #e6b800;
-        }
-
-        /* Confirmation Message */
-        .confirmation {
-            display: none;
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border: 1px solid #c3e6cb;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.2rem;
-        }
 
         footer {
             background-color: #1a1a1a;
@@ -137,43 +81,12 @@
     <p>Age Limit: 14+</p>
 </section>
 
-<!-- Booking Form Section -->
-<div class="booking-form">
-    <h2>Book Sumo Wrestling</h2>
-    <form id="bookingForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" required>
-
-        <button type="submit">Book Now</button>
-    </form>
-</div>
-
-<!-- Confirmation Message -->
-<div class="confirmation" id="confirmationMessage">
-    <p>Thank you for booking! We have received your request for Sumo Wrestling. We will contact you soon with further details.</p>
-</div>
 
 <!-- Footer -->
 <footer>
     <p>&copy; 2024 Adventure. All Rights Reserved.</p>
 </footer>
-
-<script>
-    // Handle booking form submission
-    document.getElementById('bookingForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Hide the form and show the confirmation message
-        document.querySelector('.booking-form').style.display = 'none';
-        document.getElementById('confirmationMessage').style.display = 'block';
-    });
-</script>
 
 </body>
 </html>
