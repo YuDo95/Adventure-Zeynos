@@ -1,9 +1,23 @@
 package dk.kea.adventurezeynos.Model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+
+@Entity
+@Table(name = "kunder")  // Map to the "kunder" table in the database
 public class Kunder {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment primary key
+    private int id;  // This is the primary key
+
     private String navn;
+
     private String email;
 
     // Constructors
@@ -39,3 +53,4 @@ public class Kunder {
         this.email = email;
     }
 }
+

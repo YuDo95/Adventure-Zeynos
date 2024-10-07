@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Activities</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Activities Section */
+        .activities-section {
+            padding: 60px 40px;
+            text-align: center;
+            background-image: url(https://www.shutterstock.com/image-photo/children-sit-slot-machines-have-600nw-1856375914.jpg); /* Replace with your actual background image URL */
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .activities-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .activity-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            color: #333;
+            position: relative;
+        }
+
+        .activity-card img {
+            width: 100%;
+            height: 150px; /* Adjust as needed */
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .activity-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .activity-card p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .activity-card .age-limit {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #FF5733;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        footer a {
+            color: #FFCC00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Activities Section -->
+<section id="activities" class="activities-section">
+    <h2>Our Activities</h2>
+    <div class="activities">
+        <!-- Go-Kart -->
+        <div class="activity-card" id="goKart">
+            <img src="https://actionhouse.dk/wp-content/uploads/2015/02/header_gokart-e1424087434508-1024x468.jpg" alt="Go-Kart"> <!-- Replace with actual Go-Kart image URL -->
+            <h3>Go-Kart</h3>
+            <p>Experience high-speed racing in our state-of-the-art Go-Kart track.</p>
+            <p class="age-limit">Age Limit: 12+</p>
+        </div>
+
+        <!-- Minigolf -->
+        <div class="activity-card" id="minigolf">
+            <img src="https://bigkahunas.com/destin/wp-content/uploads/sites/11/2023/11/Big-Kahunas-Destin-Water-Park-226.jpg" alt="Minigolf"> <!-- Replace with actual Minigolf image URL -->
+            <h3>Minigolf</h3>
+            <p>Challenge your friends and family to a game of fun and competitive minigolf.</p>
+            <p class="age-limit">Age Limit: All ages</p>
+        </div>
+
+        <!-- Paintball -->
+        <div class="activity-card" id="paintball">
+            <img src="https://super7spaintball.com/wp-content/uploads/2023/05/slidebg_002.jpg" alt="Paintball"> <!-- Replace with actual Paintball image URL -->
+            <h3>Paintball</h3>
+            <p>Gear up for an action-packed day of paintball, full of strategy and teamwork.</p>
+            <p class="age-limit">Age Limit: 16+</p>
+        </div>
+
+        <!-- Sumo Wrestling -->
+        <div class="activity-card" id="sumoWrestling">
+            <img src="https://bouncycastlenetwork-res.cloudinary.com/image/upload/f_auto,q_auto,c_limit,w_900/f6b751d098ec0110eeb288b3eea4aae1" alt="Sumo Wrestling"> <!-- Replace with actual Sumo Wrestling image URL -->
+            <h3>Sumo Wrestling</h3>
+            <p>Put on the sumo suits and wrestle your way to victory in this fun and hilarious activity.</p>
+            <p class="age-limit">Age Limit: 14+</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 Adventure. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // Add click events to each card to navigate to individual pages
+    document.getElementById('goKart').addEventListener('click', function () {
+        window.location.href = 'go-kart.html';
+    });
+    document.getElementById('minigolf').addEventListener('click', function () {
+        window.location.href = 'minigolf.html';
+    });
+    document.getElementById('paintball').addEventListener('click', function () {
+        window.location.href = 'paintball.html';
+    });
+    document.getElementById('sumoWrestling').addEventListener('click', function () {
+        window.location.href = 'sumo-wrestling.html';
+    });
+</script>
+
+</body>
+</html>
