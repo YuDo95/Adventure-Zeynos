@@ -3,39 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Instruktører</title>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      let instruktørerData = document.getElementById('instruktørerData').dataset.instruktører;
-      let instruktører = JSON.parse(instruktørerData);
-
-      let instruktørTableBody = document.getElementById('instruktørTableBody');
-      instruktører.forEach(instruktør => {
-        let row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${instruktør.id}</td>
-          <td>${instruktør.navn}</td>
-          <td>
-            <a href="/instruktører/${instruktør.id}">View</a>
-            <form action="/instruktører/${instruktør.id}" method="post" style="display:inline;">
-              <button type="submit">Update</button>
-            </form>
-            <form action="/instruktører/${instruktør.id}" method="post" style="display:inline;">
-              <input type="hidden" name="_method" value="delete"/>
-              <button type="submit">Delete</button>
-            </form>
-          </td>
-        `;
-        instruktørTableBody.appendChild(row);
-      });
-    });
-  </script>
 </head>
 <body>
 
 <h1>Instruktører</h1>
-
-<!-- Hidden div to store instructors data -->
-<div id="instruktørerData" data-instruktører='[{"id":1,"navn":"John Doe"}, {"id":2,"navn":"Jane Smith"}]' style="display: none;"></div>
 
 <h2>Create New Instruktør</h2>
 <form action="/instruktører" method="post">
@@ -51,7 +22,18 @@
     <th>Navn</th>
     <th>Actions</th>
   </tr>
-  <tbody id="instruktørTableBody"></tbody>
+  <tbody id="instruktørTableBody">
+  <tr th:each="instruktør : ${instruktører}">
+    <td th:text="${instruktør.id}"></td>
+    <td th:text="${instruktør.navn}"></td>
+    <td>
+      <a th:href="@{/instruktører/{id}(id=${instruktør.id})}">View</a>
+      <form th:action="@{/instruktører/{id}/delete(id=${instruktør.id})}" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
 </table>
 
 </body>

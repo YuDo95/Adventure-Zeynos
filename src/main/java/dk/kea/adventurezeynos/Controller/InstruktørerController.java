@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/instruktører")
 public class InstruktørerController {
@@ -16,25 +18,27 @@ public class InstruktørerController {
 
     @GetMapping
     public String getAllInstruktører(Model model) {
-        model.addAttribute("instruktører", instruktørerService.findAll());
-        return "instruktører";
+        List<Instruktører> instruktører = instruktørerService.findAll();
+        model.addAttribute("instruktører", instruktører);
+        return "instruktører"; // Returns the view name to display all instructors
     }
 
     @GetMapping("/{id}")
     public String getInstruktørById(@PathVariable int id, Model model) {
-        model.addAttribute("instruktør", instruktørerService.findById(id));
-        return "instruktør-detail";
+        Instruktører instruktør = instruktørerService.findById(id);
+        model.addAttribute("instruktør", instruktør);
+        return "instruktør-detail"; // Returns the view name to display a specific instructor's details
     }
 
     @PostMapping
-    public String createInstruktør(@ModelAttribute Instruktører instruktører) {
-        instruktørerService.save(instruktører);
-        return "redirect:/instruktører";
+    public String createInstruktør(@ModelAttribute Instruktører instruktør) {
+        instruktørerService.save(instruktør);
+        return "redirect:/instruktører"; // Redirects to the list of instructors after creation
     }
 
     @PostMapping("/{id}/delete")
     public String deleteInstruktør(@PathVariable int id) {
         instruktørerService.deleteById(id);
-        return "redirect:/instruktører";
+        return "redirect:/instruktører"; // Redirects to the list of instructors after deletion
     }
 }
