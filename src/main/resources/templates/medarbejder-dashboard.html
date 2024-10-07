@@ -2,9 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medarbejder Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .dashboard-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        button {
+            padding: 10px;
+            background-color: #FFCC00;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e6b800;
+        }
+        form {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="dashboard-container">
+    <h1>Medarbejder Dashboard</h1>
+    <h2>Administrer Aktiviteter</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Aktivitet</th>
+            <th>Ledige pladser</th>
+            <th>Handling</th>
+        </tr>
+        </thead>
+        <tbody id="activitiesList">
+        <!-- Aktiviteter vil blive indlæst her via JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Tilføj Ny Aktivitet</h2>
+    <form id="addActivityForm">
+        <label for="activityName">Aktivitetens navn:</label>
+        <input type="text" id="activityName" name="activityName" required>
+        <label for="availableSpots">Ledige pladser:</label>
+        <input type="number" id="availableSpots" name="availableSpots" required>
+        <button type="submit">Tilføj Aktivitet</button>
+    </form>
+</div>
+
+<script>
+    // Fetch and display existing activities
+    function loadActivities() {
+        fetch('/api/aktiviteter')
+            .then(response => response.json())
+            .then(data => {
+                const activitiesList = document.getElementById('activitiesList');
+                activitiesList.innerHTML = ''; // Clear current content
+                data.forEach(activity => {
+                    activitiesList.innerHTML += `
+                    <tr>
+                        <td>${activity.name}</td>
+                        <td>${activity.availableSpots}</td>
+                        <td><button onclick="removeActivity(${activity.id})">Slet</button></td>
+                    </tr>
+                `;
+                });
+            });
+    }
+
+    // Handle adding a new activity
+    document.getElementById('addActivityForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const activityData = {
+            name: document.getElementById('activityName').value,
+            availableSpots: document.getElementById('availableSpots').value
+        };
+
+        fetch('/api/aktiviteter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(activityData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadActivities(); // Reload the list of activities
+                }
+            });
+    });
+
+    // Handle removing an activity
+    function removeActivity(activityId) {
+        fetch(`/api/aktiviteter/${activityId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadActivities(); // Reload the list of activities
+                }
+            });
+    }
+
+    // Load activities on page load
+    loadActivities();
+</script>
 
 </body>
 </html>
