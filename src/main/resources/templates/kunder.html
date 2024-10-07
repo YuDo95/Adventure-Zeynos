@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kunder</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Kunder</h1>
+
+<!-- Table for displaying customers -->
+<table id="kunderTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Navn</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be dynamically added here -->
+    </tbody>
+</table>
+
+<!-- Form for creating a new customer -->
+<h2>Create New Customer</h2>
+<form id="createCustomerForm">
+    <label for="navn">Navn:</label>
+    <input type="text" id="navn" name="navn" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <button type="submit">Create</button>
+</form>
+
+<script>
+    // Load customers when the page loads
+    window.onload = function() {
+        loadCustomers();
+    };
+
+    // Fetch all customers from the backend
+    function loadCustomers() {
+        fetch('/kunder')
+            .then(response => response.json())
+            .then(data => {
+                const kunderTableBody = document.querySelector("#kunderTable tbody");
+                kunderTableBody.innerHTML = ''; // Clear existing rows
+                data.forEach(kunde => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                            <td>${Kunder.id}</td>
+                            <td>${Kunder.navn}</td>
+                            <td>${Kunder.email}</td>
+                            <td>
+                                <button onclick="deleteCustomer(${Kunder.id})">Delete</button>
+                            </td>
+                        `;
+                    kunderTableBody.appendChild(row);
+                });
+            });
+    }
+
+    // Handle form submission to create a new customer
+    document.getElementById("createCustomerForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Create FormData object from the form inputs
+        const formData = new FormData(this);
+
+        fetch('/kunder/create', {
+            method: 'POST',
+            body: new URLSearchParams(formData) // Submit form data as URL-encoded
+        })
+            .then(response => response.json())
+            .then(() => {
+                loadCustomers(); // Reload customer list after creating a new one
+            });
+    });
+
+    // Delete a customer
+    function deleteCustomer(id) {
+        fetch(`/kunder/delete/${id}`, {
+            method: 'POST'
+        })
+            .then(() => {
+                loadCustomers(); // Reload customer list after deletion
+            });
+    }
+</script>
+</body>
+</html>

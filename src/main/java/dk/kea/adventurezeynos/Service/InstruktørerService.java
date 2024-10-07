@@ -18,14 +18,15 @@ public class InstruktørerService {
     }
 
     public Instruktører findById(int id) {
-        return instruktørerRepository.findById(id);
+        return instruktørerRepository.findById(id).orElse(null);
     }
 
-    public void save(Instruktører instruktører) {
-        instruktørerRepository.save(instruktører);
+    public void save(Instruktører instruktør) {
+        instruktørerRepository.save(instruktør);
     }
 
     public void deleteById(int id) {
         instruktørerRepository.deleteById(id);
     }
 }
+

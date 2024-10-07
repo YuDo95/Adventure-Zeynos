@@ -1,8 +1,19 @@
 package dk.kea.adventurezeynos.Model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "instruktører")  // Specify the table name in the database
 public class Instruktører {
 
-    private int id; // Changed from Long to int
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String navn;
 
     // Constructors
