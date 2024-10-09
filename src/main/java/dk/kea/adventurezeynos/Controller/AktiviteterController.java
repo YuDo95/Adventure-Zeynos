@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/activities")
+@RequestMapping("/aktiviteter")
 public class AktiviteterController {
 
     private final AktiviteterService aktiviteterService;
@@ -37,7 +37,7 @@ public class AktiviteterController {
 
     @PostMapping
     public String createAktivitet(@RequestParam("navn") String navn,
-                                  @RequestParam("instruktørId") int instruktørId) {
+                                  @RequestParam("id") int instruktørId) {
         Instruktører instruktør = instruktørerService.findById(instruktørId);
 
         Aktiviteter newAktivitet = new Aktiviteter();
@@ -53,7 +53,7 @@ public class AktiviteterController {
     public String getAktivitetById(@PathVariable int id, Model model) {
         Aktiviteter aktivitet = aktiviteterService.findById(id);
         model.addAttribute("aktivitet", aktivitet);
-        return "aktivitet-detail";
+        return "aktiviteter";
     }
 
     @PostMapping("/{id}/delete")
