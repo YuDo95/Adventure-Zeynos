@@ -29,4 +29,8 @@ public class KunderService {
     public void deleteById(int id) {
         kundeRepository.deleteById(id);
     }
+
+    public boolean existsByEmail(String email) {
+        return kundeRepository.existsByEmail(email);
+    }
 }

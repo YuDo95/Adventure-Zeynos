@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="5; url='http://localhost:8080/instruktorer'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instruktører</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    h2 {
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    form[style="display:inline;"] {
+      margin: 0;
+      padding: 0;
+    }
+
+    form[style="display:inline;"] button {
+      background-color: #dc3545;
+      padding: 5px 10px;
+      font-size: 12px;
+      margin: 0;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    form[style="display:inline;"] button:hover {
+      background-color: #c82333;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Instruktører</h1>
+
+<h2>Create New Instruktør</h2>
+<form action="/instruktorer/create" method="post">
+  <label for="navn">Navn:</label>
+  <input type="text" name="navn" id="navn" placeholder="Navn" required>
+  <button type="submit">Create</button>
+</form>
+
+<h2>Existing Instruktører</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Navn</th>
+    <th>Actions</th>
+  </tr>
+  <tbody id="instruktørTableBody">
+  <tr th:each="instruktør : ${instruktører}">
+    <td th:text="${instruktør.id}"></td>
+    <td th:text="${instruktør.navn}"></td>
+    <td>
+      <a th:href="@{/instruktorer/{id}(id=${instruktør.id})}">View</a>
+      <form th:action="@{/instruktorer/delete/{id}(id=${instruktør.id})}" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
