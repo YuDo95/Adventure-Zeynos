@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KunderRepository extends JpaRepository<Kunder, Integer> {
+    boolean existsByEmail(String email);
 }
