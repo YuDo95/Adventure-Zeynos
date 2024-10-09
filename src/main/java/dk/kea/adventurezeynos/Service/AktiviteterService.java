@@ -14,6 +14,7 @@ public class AktiviteterService {
     @Autowired
     private AktiviteterRepository aktiviteterRepository;
 
+
     public List<Aktiviteter> findAll() {
         return aktiviteterRepository.findAll();
     }

@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            background-image: url(https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg); ;
+            background-image: url(https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg);
             padding: 20px;
         }
         h1 {
@@ -53,13 +53,13 @@
 
 <div class="booking-container">
     <h1>Book en Aktivitet</h1>
-    <form id="bookingForm">
+    <form action="/bookinger/save" method="post" id="bookingForm">
         <label for="aktivitet">Vælg Aktivitet:</label>
-        <select id="aktivitet" name="aktivitet" required>
-            <option value="go-kart">Go-Kart</option>
-            <option value="minigolf">Minigolf</option>
-            <option value="paintball">Paintball</option>
-            <option value="sumo-wrestling">Sumo Wrestling</option>
+        <select id="aktivitet" name="aktivitet_id" required>
+            <option value="" disabled selected>Vælg aktivitet</option>
+            <th:block th:each="aktivitet : ${aktiviteter}">
+                <option th:value="${aktivitet.id}" th:text="${aktivitet.navn}"></option>
+            </th:block>
         </select>
 
         <label for="dato">Vælg Dato:</label>
@@ -69,9 +69,14 @@
         <input type="time" id="tid" name="tid" required>
 
         <label for="deltagere">Antal Deltagere:</label>
-        <input type="number" id="deltagere" name="deltagere" min="1" max="20" required>
+        <input type="number" id="deltagere" name="antalDeltagere" min="1" max="20" required>
 
-        <button type="submit">Bekræft Booking</button>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <div class="button-group">
+            <button type="submit">Bekræft Booking</button>
+        </div>
     </form>
 
     <div id="confirmationMessage" style="display:none; margin-top: 20px;">
@@ -83,21 +88,22 @@
     document.getElementById('bookingForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const aktivitet = document.getElementById('aktivitet').value;
+        const aktivitetId = document.getElementById('aktivitet').value;
         const dato = document.getElementById('dato').value;
         const tid = document.getElementById('tid').value;
         const deltagere = document.getElementById('deltagere').value;
+        const email = document.getElementById('email').value;
 
-        // Form data that will be sent to the server
         const bookingData = {
-            aktivitet: aktivitet,
-            dato: dato,
+            aktivitet_id: aktivitetId,
+            kunde_id: null, // You may need to set this based on your existing customers
+            dato: `${dato}T${tid}`, // Combine date and time into a single datetime string
             tid: tid,
-            deltagere: deltagere
+            antal_deltagere: deltagere,
+            email: email
         };
 
-        // Example of sending the booking data to the server (you can replace this with your own backend integration)
-        fetch('/api/book-aktivitet', {
+        fetch('/bookinger/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +112,6 @@
         })
             .then(response => {
                 if (response.ok) {
-                    // Clear form and show confirmation message
                     document.getElementById('bookingForm').reset();
                     document.getElementById('confirmationMessage').style.display = 'block';
                 } else {
