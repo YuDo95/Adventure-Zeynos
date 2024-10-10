@@ -12,9 +12,11 @@
             padding: 20px;
             position: relative; /* Allows for absolute positioning of the button */
         }
+
         h1 {
             text-align: center;
         }
+
         .booking-container {
             max-width: 600px;
             margin: 0 auto;
@@ -23,11 +25,13 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
         label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
         }
+
         input[type="text"], input[type="email"], input[type="date"], input[type="time"], input[type="number"], select {
             width: 100%;
             padding: 10px;
@@ -35,6 +39,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         button {
             width: 100%;
             padding: 15px;
@@ -45,9 +50,11 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #e6b800;
         }
+
         .back-button {
             position: absolute; /* Allows the button to be positioned at the top left */
             top: 20px; /* Space from the top */
@@ -60,8 +67,9 @@
             border-radius: 5px;
             transition: background-color 0.2s ease;
         }
+
         .back-button:hover {
-            background-color: #e6b800; /* Darker blue on hover */
+            background-color: #d4a600; /* Darker blue on hover */
         }
     </style>
 </head>
@@ -75,7 +83,6 @@
         <label for="aktivitet">Vælg Aktivitet:</label>
         <select id="aktivitet" name="aktivitet_id" required>
             <option value="" disabled selected>Vælg aktivitet</option>
-            <!-- Thymeleaf loop for dynamically displaying activities -->
             <th:block th:each="aktivitet : ${aktiviteter}">
                 <option th:value="${aktivitet.id}" th:text="${aktivitet.navn}"></option>
             </th:block>
@@ -117,7 +124,6 @@
             aktivitet_id: aktivitetId,
             kunde_id: null, // You may need to set this based on your existing customers
             dato: `${dato}T${tid}`, // Combine date and time into a single datetime string
-            tid: tid,
             antal_deltagere: deltagere,
             email: email
         };

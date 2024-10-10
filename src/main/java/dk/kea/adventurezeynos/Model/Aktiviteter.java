@@ -67,4 +67,16 @@ public class Aktiviteter {
     public void setAgeLimit(String ageLimit) {
         this.ageLimit = ageLimit;
     }
+
+    @Override
+    public String toString() {
+        return "Aktiviteter{" +
+                "id=" + id +
+                ", navn='" + navn + '\'' +
+                ", instruktorId=" + instruktorId +
+                ", pictureUrl='" + pictureUrl + '\'' +
+                ", beskrivelse='" + beskrivelse + '\'' +
+                ", ageLimit='" + ageLimit + '\'' +
+                '}';
+    }
 }
