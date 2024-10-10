@@ -27,7 +27,7 @@ public class InstruktørerController {
     public String getInstruktørById(@PathVariable int id, Model model) {
         Instruktører instruktør = instruktørerService.findById(id);
         model.addAttribute("instruktør", instruktør);
-        return "instruktorer"; // Returns the view name to display a specific instructor's details
+        return "instruktør-details"; // Returns the view name to display a specific instructor's details
     }
 
     @PostMapping("/create")
@@ -42,3 +42,4 @@ public class InstruktørerController {
         return "redirect:/instruktorer"; // Redirects to the list of instructors after deletion
     }
 }
+

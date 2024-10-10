@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt - AdventureXP</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://cdn-images-1.medium.com/max/1024/1*oZPcUcP8uComiVa4TtrIgQ.gif');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .go-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .go-back button {
+            padding: 10px 20px;
+            background-color: #FFCC00;
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .go-back button:hover {
+            background-color: #ffb300;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .contact-info {
+            line-height: 1.8;
+        }
+        .contact-info p {
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
+
+<div class="go-back">
+    <button onclick="window.location.href='http://localhost:8080/'">Gå tilbage</button>
+</div>
+
+<div class="container">
+    <h1>Kontakt os</h1>
+    <div class="contact-info">
+        <p><strong>Adresse:</strong> AdventureXP, Eksempelgade 12, 1234 København</p>
+        <p><strong>Email:</strong> kontakt@adventurexp.dk</p>
+        <p><strong>Telefon:</strong> +45 1234 5678</p>
+        <p><strong>Åbningstider:</strong> Mandag - Fredag, 9:00 - 17:00</p>
+    </div>
+</div>
 
 </body>
 </html>
