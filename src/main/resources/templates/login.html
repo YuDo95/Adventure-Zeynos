@@ -6,73 +6,63 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-image: url('https://i.pinimg.com/originals/36/a0/41/36a04197a7be4e694d9f35389287841c.gif'); /* Background image */
-      background-size: 100%; /* Adjust this percentage to make the background smaller */
-      background-repeat: no-repeat; /* Prevents the image from repeating */
-      background-position: center; /* Centers the background image */
+      background-image: url('https://i.pinimg.com/originals/36/a0/41/36a04197a7be4e694d9f35389287841c.gif');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
       margin: 0;
       padding: 0;
-      height: 100vh; /* Full viewport height */
-      display: flex; /* Enables flexbox for centering */
-      justify-content: center; /* Centers horizontally */
-      align-items: center; /* Centers vertically */
-      overflow: hidden; /* Hides any overflow caused by background size */
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .container {
-      width: 400px; /* Set a fixed width for the login box */
-      background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+      width: 400px;
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
     h1 {
       color: #2c3e50;
       text-align: center;
-      margin-top: 0; /* Remove margin-top for better alignment */
+      margin-top: 0;
     }
     label {
       display: block;
       margin-bottom: 10px;
       font-size: 18px;
     }
-    input[type="text"],
-    input[type="password"] {
+    input[type="text"], input[type="password"] {
       padding: 10px;
       font-size: 18px;
       border-radius: 5px;
       border: none;
       width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 20px;
       background-color: #ddd;
+      margin-bottom: 20px;
     }
     button[type="submit"] {
       font-size: 1em;
       padding: 10px 20px;
       border-radius: 5px;
-      border: none;
       background-color: #27ae60;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      width: 100%; /* Makes the button full width */
+      width: 100%;
     }
     button[type="submit"]:hover {
       background-color: #2ecc71;
     }
     .back-button {
-      display: block; /* Ensures the button is a block element */
-      margin-top: 20px; /* Adds space above the button */
+      display: block;
+      margin-top: 20px;
       padding: 10px;
       border-radius: 5px;
-      background-color: #3498db; /* Blue background color */
+      background-color: #3498db;
       color: white;
-      text-align: center; /* Centers text within the button */
-      text-decoration: none; /* Removes underline from link */
-      transition: background-color 0.2s ease;
-    }
-    .back-button:hover {
-      background-color: #2980b9; /* Darker blue on hover */
+      text-align: center;
+      text-decoration: none;
     }
     p {
       color: #f00;
@@ -83,10 +73,9 @@
   </style>
 </head>
 <body>
-
 <div class="container">
   <h1>Medarbejder Login</h1>
-  <form method="post" action="/test/login">
+  <form method="post" action="/login">
     <label for="navn">Navn:</label>
     <input type="text" id="navn" name="navn" required>
 
@@ -95,9 +84,7 @@
 
     <button type="submit">Login</button>
   </form>
-  <a href="http://localhost:8080/" class="back-button">Gå tilbage</a> <!-- Back button -->
-  <p th:text="${error}"></p>
+  <p th:if="${error}" th:text="${error}"></p>
 </div>
-
 </body>
 </html>
