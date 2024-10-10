@@ -7,12 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "instruktører")  // Specify the table name in the database
+@Table(name = "medarbejder")  // Use the Medarbejder table instead of Instruktører
 public class Instruktører {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; // Changed Long to int
+    private int id;
 
     private String navn;
     private String kode;
@@ -42,4 +42,3 @@ public class Instruktører {
         this.kode = kode;
     }
 }
-
