@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@EnableCaching // If you want to enable caching for your service
+@EnableCaching
 public class InstruktørerService {
 
     @Autowired
@@ -29,7 +29,6 @@ public class InstruktørerService {
     }
 
     public List<Instruktører> findAll() {
-        return instruktørerRepository.findAll(); // Fetch all instructors from the repository
+        return instruktørerRepository.findAll(); // Fetch all employees from the repository
     }
 }
-
