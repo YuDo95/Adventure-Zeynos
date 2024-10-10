@@ -21,22 +21,33 @@ public class BookingerController {
     @Autowired
     private AktiviteterService aktiviteterService;
 
-    // Get all bookings
+    // Show the booking form with activities
+    @GetMapping("/valg") // Adjusted to include /form for the booking form
+    public String showBookingForm(Model model) {
+        List<Aktiviteter> aktiviteter = aktiviteterService.getAllAktiviteter(); // Fetch activities
+        model.addAttribute("aktiviteter", aktiviteter); // Add to model
+        return "bookinger"; // Return the view name
+    }
+
+    // Save a new booking
+    @PostMapping("/save")
+    public String createBooking(@ModelAttribute Bookinger booking) {
+        bookingService.save(booking);
+        return "redirect:/bookinger"; // Redirect to the booking form after saving
+    }
+
+    // Get all bookings (if needed)
     @GetMapping
-    public List<Bookinger> getAllBookings() {
-        return bookingService.findAll();
+    public String getAllBookings(Model model) {
+        List<Bookinger> bookings = bookingService.findAll();
+        model.addAttribute("bookings", bookings); // Add bookings to the model if displaying them
+        return "bookinger"; // Return the view name for displaying bookings, if applicable
     }
 
     // Get booking by ID
     @GetMapping("/{id}")
     public Bookinger getBookingById(@PathVariable int id) {
         return bookingService.findById(id).orElse(null);
-    }
-
-    @PostMapping("/save")
-    public String createBooking(@ModelAttribute Bookinger booking) {
-        bookingService.save(booking);
-        return "redirect:/bookinger"; // Redirect after saving the booking
     }
 
     // Update an existing booking
@@ -55,12 +66,5 @@ public class BookingerController {
     @DeleteMapping("/delete/{id}")
     public void deleteBooking(@PathVariable int id) {
         bookingService.deleteById(id);
-    }
-
-    @GetMapping("/create")
-    public String showBookingForm(Model model) {
-        List<Aktiviteter> aktiviteter = aktiviteterService.findAll(); // Fetch activities
-        model.addAttribute("aktiviteter", aktiviteter); // Add to model
-        return "createBooking"; // Assuming the view is named 'createBooking.html'
     }
 }
