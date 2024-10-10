@@ -1,7 +1,7 @@
 package dk.kea.adventurezeynos.Service;
 
 import dk.kea.adventurezeynos.Model.Bookinger;
-import dk.kea.adventurezeynos.Repository.BookingRepository;
+import dk.kea.adventurezeynos.Repository.BookingerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,24 +12,24 @@ import java.util.Optional;
 public class BookingerService {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private BookingerRepository bookingerRepository;
 
 
     public List<Bookinger> findAll() {
-        return bookingRepository.findAll();
+        return bookingerRepository.findAll();
     }
 
     public Optional<Bookinger> findById(int id) {
-        return bookingRepository.findById(id);
+        return bookingerRepository.findById(id);
     }
 
 
     public Bookinger save(Bookinger booking) {
-        return bookingRepository.save(booking);
+        return bookingerRepository.save(booking);
     }
 
 
     public void deleteById(int id) {
-        bookingRepository.deleteById(id);
+        bookingerRepository.deleteById(id);
     }
 }
