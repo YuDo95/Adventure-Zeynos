@@ -4,28 +4,31 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "aktiviteter")
-public class Aktiviteter {
-
+public class AktiviteterAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String navn;
 
-    @Column(name = "instruktør_id") // Maps to 'instruktør_id' in the database
-    private int instruktorId;
+    @Column(name = "instruktør_id")
+    private int instruktørId;
 
-    @Column(name = "picture_url") // Maps to 'picture_url' in the database
+    @Column(name = "picture_url")
     private String pictureUrl;
 
     private String beskrivelse;
 
-    @Column(name = "age_limit") // Maps to 'age_limit' in the database
+    @Column(name = "age_limit")
     private String ageLimit;
 
     // Getters and Setters
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNavn() {
@@ -36,12 +39,12 @@ public class Aktiviteter {
         this.navn = navn;
     }
 
-    public int getInstruktorId() {
-        return instruktorId;
+    public int getInstruktørId() {
+        return instruktørId;
     }
 
-    public void setInstruktorId(int instruktorId) {
-        this.instruktorId = instruktorId;
+    public void setInstruktørId(int instruktørId) {
+        this.instruktørId = instruktørId;
     }
 
     public String getPictureUrl() {
