@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="5; url='http://localhost:8080/instruktorer'" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instruktører</title>
   <style>
@@ -46,7 +45,7 @@
     }
 
     button {
-      background-color: #007bff;
+      background-color: #e6b800;
       color: white;
       border: none;
       padding: 10px 20px;
@@ -56,7 +55,7 @@
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #e6b800;
     }
 
     table {
@@ -75,7 +74,7 @@
     }
 
     th {
-      background-color: #007bff;
+      background-color: #e6b800;
       color: white;
     }
 
@@ -85,7 +84,7 @@
 
     a {
       text-decoration: none;
-      color: #007bff;
+      color: #e6b800;
     }
 
     a:hover {
@@ -113,9 +112,26 @@
     td {
       vertical-align: middle;
     }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #e6b800;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .back-button:hover {
+      background-color: #e6b800;
+    }
+
   </style>
 </head>
 <body>
+
+<a href="/dashboard" class="back-button">Gå tilbage</a> <!-- The back button -->
 
 <h1>Instruktører</h1>
 
@@ -123,6 +139,10 @@
 <form action="/instruktorer/create" method="post">
   <label for="navn">Navn:</label>
   <input type="text" name="navn" id="navn" placeholder="Navn" required>
+
+  <label for="kode">Kode:</label>
+  <input type="text" name="kode" id="kode" placeholder="Kode" required>
+
   <button type="submit">Create</button>
 </form>
 
@@ -131,12 +151,14 @@
   <tr>
     <th>ID</th>
     <th>Navn</th>
+    <th>Kode</th>
     <th>Actions</th>
   </tr>
   <tbody id="instruktørTableBody">
   <tr th:each="instruktør : ${instruktører}">
     <td th:text="${instruktør.id}"></td>
     <td th:text="${instruktør.navn}"></td>
+    <td th:text="${instruktør.kode}"></td>
     <td>
       <a th:href="@{/instruktorer/{id}(id=${instruktør.id})}">View</a>
       <form th:action="@{/instruktorer/delete/{id}(id=${instruktør.id})}" method="post" style="display:inline;">
@@ -149,3 +171,4 @@
 
 </body>
 </html>
+

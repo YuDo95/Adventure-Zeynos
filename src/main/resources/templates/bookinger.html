@@ -8,8 +8,9 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            background-image: url(https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg);
+            background-image: url('https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg');
             padding: 20px;
+            position: relative; /* Allows for absolute positioning of the button */
         }
         h1 {
             text-align: center;
@@ -47,9 +48,26 @@
         button:hover {
             background-color: #e6b800;
         }
+        .back-button {
+            position: absolute; /* Allows the button to be positioned at the top left */
+            top: 20px; /* Space from the top */
+            left: 20px; /* Space from the left */
+            padding: 10px;
+            background-color: #e6b800; /* Blue background color */
+            color: white;
+            text-align: center; /* Centers text within the button */
+            text-decoration: none; /* Removes underline from link */
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .back-button:hover {
+            background-color: #e6b800; /* Darker blue on hover */
+        }
     </style>
 </head>
 <body>
+
+<a href="http://localhost:8080/kunde/kundeOprettelse" class="back-button">Gå tilbage</a> <!-- Back button at the top left -->
 
 <div class="booking-container">
     <h1>Book en Aktivitet</h1>
@@ -57,6 +75,7 @@
         <label for="aktivitet">Vælg Aktivitet:</label>
         <select id="aktivitet" name="aktivitet_id" required>
             <option value="" disabled selected>Vælg aktivitet</option>
+            <!-- Thymeleaf loop for dynamically displaying activities -->
             <th:block th:each="aktivitet : ${aktiviteter}">
                 <option th:value="${aktivitet.id}" th:text="${aktivitet.navn}"></option>
             </th:block>
