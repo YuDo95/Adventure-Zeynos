@@ -1,81 +1,48 @@
-CREATE
-DATABASE Zeynos_AdventureXP;
-USE
-Zeynos_AdventureXP;
-
+create database adventurexp;
+use adventurexp;
 -- Opret tabel for Kunder
-CREATE TABLE Kunder
-(
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    navn           VARCHAR(100) NOT NULL,
-    email          VARCHAR(100) NOT NULL,
-    telefon_nummer varchar(50)  not null
+CREATE TABLE Kunder (
+id INT AUTO_INCREMENT PRIMARY KEY,
+navn VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL,
+telefon_nummer varchar(50) not null
 );
 
--- Opret tabel for Varer
-CREATE TABLE Varer
-(
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    navn VARCHAR(100)   NOT NULL,
-    pris DECIMAL(10, 2) NOT NULL
+CREATE TABLE medarbejder (
+id INT AUTO_INCREMENT PRIMARY KEY,
+navn VARCHAR(255) NOT NULL,
+kode VARCHAR(255) NOT NULL
 );
 
--- Opret tabel for Instruktører
-CREATE TABLE Instruktører
-(
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    navn VARCHAR(100) NOT NULL,
-    kode varchar(100) not null
-);
 
 -- Opret tabel for Aktiviteter
-CREATE TABLE Aktiviteter
-(
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    navn          VARCHAR(100) NOT NULL,
-    instruktør_id INT          NOT NULL,
-    picture_url   VARCHAR(255),
-    beskrivelse   TEXT,
-    age_limit     VARCHAR(50),
-    FOREIGN KEY (instruktør_id) REFERENCES Instruktører (id)
+CREATE TABLE Aktiviteter (
+id INT AUTO_INCREMENT PRIMARY KEY,
+navn VARCHAR(100) NOT NULL,
+instruktør_id INT NOT NULL,
+picture_url VARCHAR(255),
+beskrivelse TEXT,
+age_limit VARCHAR(50),
+FOREIGN KEY (instruktør_id) REFERENCES medarbejder(id)
 );
 
 -- Opret tabel for Bookinger
-CREATE TABLE Bookinger
-(
-    id              INT AUTO_INCREMENT PRIMARY KEY,
-    aktivitet_id    INT      NOT NULL,
-    kunde_id        INT      NOT NULL,
-    dato            DATETIME NOT NULL,
-    tid             TIME     NOT NULL,
-    antal_deltagere INT      NOT NULL,
-    FOREIGN KEY (aktivitet_id) REFERENCES Aktiviteter (id),
-    FOREIGN KEY (kunde_id) REFERENCES Kunder (id)
+CREATE TABLE Bookinger (
+id INT AUTO_INCREMENT PRIMARY KEY,
+aktivitet_id INT NOT NULL,
+kunde_id INT NOT NULL,
+dato DATETIME NOT NULL,
+tid TIME NOT NULL,
+antal_deltagere INT NOT NULL,
+FOREIGN KEY (aktivitet_id) REFERENCES Aktiviteter(id),
+FOREIGN KEY (kunde_id) REFERENCES Kunder(id)
 );
-
-
--- Opret tabel for Salg
-CREATE TABLE Salg
-(
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    vare_id  INT NOT NULL,
-    kunde_id INT NOT NULL,
-    antal    INT NOT NULL,
-    FOREIGN KEY (vare_id) REFERENCES Varer (id),
-    FOREIGN KEY (kunde_id) REFERENCES Kunder (id)
-);
-
-use Zeynos_AdventureXP;
-
-
-INSERT INTO instruktører (navn, kode)
-VALUES ('mohamed', 'mohamed');
-INSERT INTO instruktører (navn, kode)
-VALUES ('ali', 'ali');
-INSERT INTO instruktører (navn, kode)
-VALUES ('yusuf', 'yusuf');
-INSERT INTO instruktører (navn, kode)
-VALUES ('khalid', 'khalid');
+-- insert medarbejder
+INSERT INTO medarbejder (navn, kode) VALUES ('khalid', 'khalid');
+INSERT INTO medarbejder (navn, kode) VALUES ('ali', 'ali');
+INSERT INTO medarbejder (navn, kode) VALUES ('yusuf', 'yusuf');
+INSERT INTO medarbejder (navn, kode) VALUES ('Mohamed', 'Mohamed');
+INSERT INTO medarbejder (navn, kode) VALUES ('oskar', 'oskar');
 
 -- Insert Paintball Activity
 INSERT INTO Aktiviteter (navn, instruktør_id, picture_url, beskrivelse, age_limit)
