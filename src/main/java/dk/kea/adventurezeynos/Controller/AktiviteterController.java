@@ -9,56 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/aktiviteter")
 public class AktiviteterController {
 
-    private final AktiviteterService aktiviteterService;
-    private final InstruktørerService instruktørerService;
-
     @Autowired
-    public AktiviteterController(AktiviteterService aktiviteterService, InstruktørerService instruktørerService) {
-        this.aktiviteterService = aktiviteterService;
-        this.instruktørerService = instruktørerService;
-    }
+    private AktiviteterService aktiviteterService;
 
-    @GetMapping
-    public String getAllAktiviteter(Model model) {
-        List<Aktiviteter> aktiviteter = aktiviteterService.findAll();
-        model.addAttribute("aktiviteter", aktiviteter);
-
-        List<Instruktører> instruktører = instruktørerService.findAll();
-        model.addAttribute("instruktører", instruktører);
-
-        return "aktiviteter"; // Return view to show activities
-    }
-
-    @PostMapping
-    public String createAktivitet(@RequestParam("navn") String navn,
-                                  @RequestParam("id") int instruktørId) {
-        Instruktører instruktør = instruktørerService.findById(instruktørId);
-
-        Aktiviteter newAktivitet = new Aktiviteter();
-        newAktivitet.setNavn(navn);
-        newAktivitet.setInstruktør(instruktør);
-
-        aktiviteterService.save(newAktivitet);
-
-        return "redirect:/aktiviteter";
-    }
-
-    @GetMapping("/{id}")
-    public String getAktivitetById(@PathVariable int id, Model model) {
-        Aktiviteter aktivitet = aktiviteterService.findById(id);
-        model.addAttribute("aktivitet", aktivitet);
-        return "aktiviteter";
-    }
-
-    @PostMapping("/{id}/delete")
-    public String deleteAktivitet(@PathVariable int id) {
-        aktiviteterService.deleteById(id);
-        return "redirect:/aktiviteter";
+    @GetMapping("/aktiviteter")
+    public String getAktiviteter(Model model) {
+        model.addAttribute("aktiviteter", aktiviteterService.getAllAktiviteter());
+        return "aktiviteter"; // Return the name of the HTML template
     }
 }
