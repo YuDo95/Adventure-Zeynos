@@ -49,8 +49,4 @@ public class AktiviteterService {
         }
     }
 
-    // Additional method to find all activities (redundant with getAllAktiviteter)
-    public List<Aktiviteter> findAll() {
-        return aktiviteterRepository.findAll();
-    }
 }
