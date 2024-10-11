@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/instruktorer")
+@RequestMapping("/instruktorer")  // Keep the request mapping as instruktorer
 public class InstruktørerController {
 
     @Autowired
@@ -42,4 +42,3 @@ public class InstruktørerController {
         return "redirect:/instruktorer"; // Redirects to the list of instructors after deletion
     }
 }
-

@@ -2,6 +2,7 @@ package dk.kea.adventurezeynos.Controller;
 
 import dk.kea.adventurezeynos.Model.Aktiviteter;
 import dk.kea.adventurezeynos.Model.Bookinger;
+import dk.kea.adventurezeynos.Model.Kunder;
 import dk.kea.adventurezeynos.Service.AktiviteterService;
 import dk.kea.adventurezeynos.Service.BookingerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bookinger")
@@ -21,50 +23,34 @@ public class BookingerController {
     @Autowired
     private AktiviteterService aktiviteterService;
 
-    // Show the booking form with activities
-    @GetMapping("/valg") // Adjusted to include /form for the booking form
+    // Viser formularen til booking sammen med aktiviteter
+    @GetMapping("/valg")
     public String showBookingForm(Model model) {
-        List<Aktiviteter> aktiviteter = aktiviteterService.getAllAktiviteter(); // Fetch activities
-        model.addAttribute("aktiviteter", aktiviteter); // Add to model
-        return "bookinger"; // Return the view name
+        List<Aktiviteter> aktiviteter = aktiviteterService.getAllAktiviteter();
+        model.addAttribute("aktiviteter", aktiviteter);
+        return "bookinger";
     }
 
-    // Save a new booking
+    // Gemmer en ny booking baseret på e-mail i stedet for kunde_id
     @PostMapping("/save")
-    public String createBooking(@ModelAttribute Bookinger booking) {
-        bookingService.save(booking);
-        return "redirect:/bookinger"; // Redirect to the booking form after saving
+    public String createBooking(@RequestParam("email") String email, @ModelAttribute Bookinger booking, Model model) {
+        Optional<Kunder> kunde = bookingService.findCustomerByEmail(email);
+
+        if (kunde.isPresent()) {
+            booking.setKunde(kunde.get());  // Sætter kunde_id baseret på e-mail
+            bookingService.save(booking);  // Gemmer bookingen
+            return "redirect:/bookinger";  // Redirecter til bookingsiden efter gemning
+        } else {
+            model.addAttribute("errorMessage", "Kunde med e-mailen findes ikke.");
+            return "bookinger";  // Returnerer til samme side med fejlmeddelelse
+        }
     }
 
-    // Get all bookings (if needed)
+    // Henter alle bookinger
     @GetMapping
     public String getAllBookings(Model model) {
         List<Bookinger> bookings = bookingService.findAll();
-        model.addAttribute("bookings", bookings); // Add bookings to the model if displaying them
-        return "bookinger"; // Return the view name for displaying bookings, if applicable
-    }
-
-    // Get booking by ID
-    @GetMapping("/{id}")
-    public Bookinger getBookingById(@PathVariable int id) {
-        return bookingService.findById(id).orElse(null);
-    }
-
-    // Update an existing booking
-    @PutMapping("/edit/{id}")
-    public Bookinger updateBooking(@PathVariable int id, @RequestBody Bookinger updatedBooking) {
-        return bookingService.findById(id).map(booking -> {
-            booking.setAktivitet(updatedBooking.getAktivitet());
-            booking.setKunde(updatedBooking.getKunde());
-            booking.setDato(updatedBooking.getDato());
-            booking.setAntalDeltagere(updatedBooking.getAntalDeltagere());
-            return bookingService.save(booking);
-        }).orElse(null);
-    }
-
-    // Delete booking by ID
-    @DeleteMapping("/delete/{id}")
-    public void deleteBooking(@PathVariable int id) {
-        bookingService.deleteById(id);
+        model.addAttribute("bookings", bookings);
+        return "bookinger";
     }
 }

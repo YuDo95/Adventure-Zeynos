@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookinger Admin - AdventureXP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            color: #495057;
+        }
+
+        th {
+            background-color: #e9ecef;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        a.delete {
+            background-color: #dc3545;
+        }
+
+        a.delete:hover {
+            background-color: #c82333;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none; /* Hide the headers */
+            }
+
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%; /* Create space for labels */
+            }
+
+            td:before {
+                content: attr(data-label); /* Use data-label for header text */
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 10px;
+                font-weight: bold;
+                text-align: left;
+                color: #6c757d;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Bookinger Admin</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Aktivitet</th>
+        <th>Kunde</th>
+        <th>Dato</th>
+        <th>Antal Deltagere</th>
+        <th>Handlinger</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="booking : ${bookingerList}">
+        <td th:text="${booking.id}" data-label="ID"></td>
+        <td th:text="${booking.aktivitet.navn}" data-label="Aktivitet"></td>
+        <td th:text="${booking.kunde.navn}" data-label="Kunde"></td>
+        <td th:text="${#temporals.format(booking.dato, 'yyyy-MM-dd')}" data-label="Dato"></td>
+        <td th:text="${booking.antalDeltagere}" data-label="Antal Deltagere"></td>
+        <td>
+
+            <a th:href="@{/bookinger/admin/delete/{id}(id=${booking.id})}" class="delete"
+               onclick="return confirm('Er du sikker på, at du vil slette denne booking?');">Slet</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/dashboard" class="back-button">Gå tilbage</a>
+</body>
+</html>

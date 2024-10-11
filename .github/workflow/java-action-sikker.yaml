@@ -12,15 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2.4.0  # Pinned to version 2.4.0
         with:
-          path: ./your-service-directory
+          path: ./src/main/java/dk/kea/adventurezeynos
+
       - name: Set up JDK 21
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@83dd6b0e4b7f7a3dbe5ba8a55ed126ae0f0198f7561eb0afef64f947745ce26d  # Pinned to specific commit hash
         with:
           java-version: '21'
           distribution: 'zulu'
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
       - name: Run Tests
         run: mvn test

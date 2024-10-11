@@ -1,6 +1,5 @@
 package dk.kea.adventurezeynos.Controller;
 
-import dk.kea.adventurezeynos.Service.InstruktørerService;
 import dk.kea.adventurezeynos.Service.MedarbejdereService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/")
 public class MedarbejdereController {
 
     private static final Logger logger = LoggerFactory.getLogger(MedarbejdereController.class);
@@ -23,7 +22,7 @@ public class MedarbejdereController {
 
     @GetMapping("/medarbejderlogin")
     public String loginPage() {
-        return "login"; // Returns the login page template
+        return "login"; // Show login page
     }
 
     @PostMapping("/login")
@@ -31,19 +30,21 @@ public class MedarbejdereController {
                         @RequestParam String kode,
                         Model model) {
         try {
-            // Call user service to validate credentials
             if (medarbejdereService.validateUser(navn, kode)) {
-                return "redirect:/dashboard"; // Redirect to the dashboard upon successful login
+                return "redirect:/dashboard"; // Redirect to dashboard if login is valid
             } else {
-                // Add error message for invalid credentials
                 model.addAttribute("error", "Forkert navn eller kode.");
-                return "login"; // Stay on the login page
+                return "login";
             }
         } catch (Exception e) {
-            // Add error message for unexpected errors
+            logger.error("An error occurred during login", e);
             model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
-            return "login"; // Stay on the login page in case of an error
+            return "login";
         }
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "medarbejderdashboard"; // Show the dashboard after login
+    }
 }
