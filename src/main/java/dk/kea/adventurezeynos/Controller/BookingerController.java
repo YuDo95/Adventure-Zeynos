@@ -1,12 +1,10 @@
 package dk.kea.adventurezeynos.Controller;
 
-import org.springframework.ui.Model;
-import dk.kea.adventurezeynos.Model.Aktiviteter;
 import dk.kea.adventurezeynos.Model.Bookinger;
-import dk.kea.adventurezeynos.Service.AktiviteterService;
 import dk.kea.adventurezeynos.Service.BookingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +16,26 @@ public class BookingerController {
     @Autowired
     private BookingerService bookingService;
 
-    @Autowired
-    private AktiviteterService aktiviteterService;
-
-    // Get all bookings
+    // Show all bookings (optional)
     @GetMapping
-    public List<Bookinger> getAllBookings() {
-        return bookingService.findAll();
+    public String getAllBookings(Model model) {
+        List<Bookinger> bookings = bookingService.findAll();
+        model.addAttribute("bookings", bookings);
+        return "bookinger"; // Return the view name for displaying bookings
+    }
+
+    // Show the booking form (if you have a separate form view)
+    @GetMapping("/new")
+    public String showBookingForm(Model model) {
+        // You can add any necessary data for the form here
+        return "newBooking"; // Return the view name for the booking form
+    }
+
+    // Save a new booking
+    @PostMapping("/save")
+    public String createBooking(@ModelAttribute Bookinger booking) {
+        bookingService.save(booking);
+        return "redirect:/bookinger"; // Redirect to the list of bookings after saving
     }
 
     // Get booking by ID
@@ -33,36 +44,9 @@ public class BookingerController {
         return bookingService.findById(id).orElse(null);
     }
 
-    @PostMapping("/save")
-    public String createBooking(@ModelAttribute Bookinger booking) {
-        bookingService.save(booking);
-        return "redirect:/bookinger"; // Redirect after saving the booking
-    }
-
-    // Update an existing booking
-    @PutMapping("/edit/{id}")
-    public Bookinger updateBooking(@PathVariable int id, @RequestBody Bookinger updatedBooking) {
-        return bookingService.findById(id).map(booking -> {
-            booking.setAktivitet(updatedBooking.getAktivitet());
-            booking.setKunde(updatedBooking.getKunde());
-            booking.setDato(updatedBooking.getDato());
-            booking.setAntalDeltagere(updatedBooking.getAntalDeltagere());
-            return bookingService.save(booking);
-        }).orElse(null);
-    }
-
     // Delete booking by ID
     @DeleteMapping("/delete/{id}")
     public void deleteBooking(@PathVariable int id) {
         bookingService.deleteById(id);
     }
-
-    @PostMapping("/create")
-    public String showBookingForm(Model model) {
-        List<Aktiviteter> aktiviteter = aktiviteterService.findAll(); // Fetch activities
-        model.addAttribute("aktiviteter", aktiviteter); // Add to model
-        return "/bookinger"; // Assuming the view is named 'create.html'
-    }
-
-
 }

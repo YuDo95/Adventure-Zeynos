@@ -1,28 +1,22 @@
 package dk.kea.adventurezeynos.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "medarbejder")  // Use the Medarbejder table instead of Instruktører
-public class Instruktører {
+public class Medarbejder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private int id;  // Changed to int
     private String navn;
     private String kode;
 
     // Getters and Setters
-    public int getId() {
+    public int getId() {  // Changed Long to int
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) {  // Changed Long to int
         this.id = id;
     }
 

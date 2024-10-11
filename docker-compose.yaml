@@ -2,17 +2,26 @@ version: '3.8'
 
 services:
   springboot-app:
-    image: springboot:latest
     build: .
+    image: springboot:latest
     ports:
       - "8080:8080"
     depends_on:
       - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/Zeynos_AdventureXP
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: cocomelon
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Adjust as needed (create, update, none)
+      SPRING_JPA_SHOW_SQL: true # Optional for debugging
 
   mysql-db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_db_name
+      MYSQL_ROOT_PASSWORD: cocomelon
+      MYSQL_DATABASE: Zeynos_AdventureXP
+      MYSQL_USER: cocomelon
+      MYSQL_PASSWORD:
     ports:
       - "3306:3306"
+    restart: always

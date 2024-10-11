@@ -8,12 +8,18 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
-      background-image: url(https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg);
+      background-image: url(https://wallpapercave.com/wp/wp2757874.gif); /* New background image */
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the image */
+      background-repeat: no-repeat; /* Prevent the image from repeating */
       padding: 20px;
+      position: relative; /* Allows for absolute positioning of the button */
     }
+
     h1 {
       text-align: center;
     }
+
     .customer-container {
       max-width: 600px;
       margin: 0 auto;
@@ -22,11 +28,13 @@
       border-radius: 10px;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
+
     label {
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
     }
+
     input[type="text"], input[type="email"], input[type="number"] {
       width: 100%;
       padding: 10px;
@@ -34,6 +42,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
+
     button {
       width: 100%;
       padding: 15px;
@@ -44,12 +53,54 @@
       font-size: 1.2rem;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #e6b800;
+    }
+
+    .back-button {
+      position: absolute; /* Allows the button to be positioned at the top left */
+      top: 20px; /* Space from the top */
+      left: 20px; /* Space from the left */
+      padding: 10px;
+      background-color: #FFCC00; /* Background color */
+      color: white;
+      text-align: center; /* Centers text within the button */
+      text-decoration: none; /* Removes underline from link */
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e6b800; /* Darker yellow on hover */
+    }
+
+    /* Cancel booking button styling */
+    .cancel-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px;
+      background-color: #FF5733;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .cancel-button:hover {
+      background-color: #cc4629;
     }
   </style>
 </head>
 <body>
+
+<a href="http://localhost:8080/" class="back-button">Gå tilbage</a> <!-- Back button at the top left -->
+
+<!-- Cancel Booking Button -->
+<a href="/contact" class="cancel-button" id="cancelButton">Annuler Booking</a> <!-- Cancel button at the top right -->
 
 <div class="customer-container">
   <h1>Opret Ny Kunde</h1>
@@ -81,7 +132,7 @@
   </form>
 
   <div id="existingCustomerMessage" style="display:none; margin-top: 20px;">
-    <p>Dette kunde eksisterer i databasen!</p>
+    <p>Denne mail eksisterer i systemet!</p>
   </div>
 </div>
 

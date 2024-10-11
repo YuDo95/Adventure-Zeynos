@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/instruktorer")
+@RequestMapping("/instruktorer")  // Keep the request mapping as instruktorer
 public class InstruktørerController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class InstruktørerController {
     public String getInstruktørById(@PathVariable int id, Model model) {
         Instruktører instruktør = instruktørerService.findById(id);
         model.addAttribute("instruktør", instruktør);
-        return "instruktorer"; // Returns the view name to display a specific instructor's details
+        return "instruktør-details"; // Returns the view name to display a specific instructor's details
     }
 
     @PostMapping("/create")

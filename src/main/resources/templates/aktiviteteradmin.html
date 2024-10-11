@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktiviteter Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #e6b800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #e6b800;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e6b800;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        form[style="display:inline;"] {
+            margin: 0;
+            padding: 0;
+        }
+
+        form[style="display:inline;"] button {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin: 0;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        form[style="display:inline;"] button:hover {
+            background-color: #c82333;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #e6b800;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/dashboard" class="back-button">Gå tilbage</a> <!-- The back button -->
+
+<h1>Aktiviteter Admin</h1>
+
+<h2>Create New Aktivitet</h2>
+<form action="/aktiviteteradmin/create" method="post">
+    <label for="navn">Navn:</label>
+    <input type="text" name="navn" id="navn" placeholder="Navn" required>
+
+    <label for="instruktørId">Medarbejder ID:</label>
+    <input type="text" name="instruktørId" id="instruktørId" placeholder="Instruktør ID" required>
+
+    <label for="pictureUrl">Picture URL:</label>
+    <input type="text" name="pictureUrl" id="pictureUrl" placeholder="Picture URL">
+
+    <label for="beskrivelse">Beskrivelse:</label>
+    <textarea name="beskrivelse" id="beskrivelse" placeholder="Beskrivelse" required></textarea>
+
+    <label for="ageLimit">Age Limit:</label>
+    <input type="text" name="ageLimit" id="ageLimit" placeholder="Age Limit" required>
+
+    <button type="submit">Create</button>
+</form>
+
+<h2>Existing Aktiviteter</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Navn</th>
+        <th>Instruktør ID</th>
+        <th>Actions</th>
+    </tr>
+    <tbody id="aktivitetTableBody">
+    <tr th:each="aktivitet : ${aktiviteter}">
+        <td th:text="${aktivitet.id}"></td>
+        <td th:text="${aktivitet.navn}"></td>
+        <td th:text="${aktivitet.instruktørId}"></td>
+        <td>
+            <form th:action="@{/aktiviteteradmin/delete/{id}(id=${aktivitet.id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
