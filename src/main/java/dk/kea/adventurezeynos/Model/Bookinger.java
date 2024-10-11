@@ -1,48 +1,36 @@
 package dk.kea.adventurezeynos.Model;
 
 import jakarta.persistence.*;
-
-
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
-@Table(name = "bookinger")  // Maps to the "bookinger" table in the database
 public class Bookinger {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "aktivitet_id", referencedColumnName = "id")
     private Aktiviteter aktivitet;
 
     @ManyToOne
-    @JoinColumn(name = "kunde_id", referencedColumnName = "id")
     private Kunder kunde;
 
-    @Temporal(TemporalType.DATE)
-    private Date dato;
+    private LocalDate dato; // Changed from Date to LocalDate
 
     private int antalDeltagere;
 
-    // Constructors
-    public Bookinger() {}
-
-    public Bookinger(int id, Aktiviteter aktivitet, Kunder kunde, Date dato, int antalDeltagere) {
-        this.id = id;
-        this.aktivitet = aktivitet;
-        this.kunde = kunde;
-        this.dato = dato;
-        this.antalDeltagere = antalDeltagere;
+    // Default constructor
+    public Bookinger() {
     }
 
     // Getters and Setters
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -62,11 +50,11 @@ public class Bookinger {
         this.kunde = kunde;
     }
 
-    public Date getDato() {
+    public LocalDate getDato() {
         return dato;
     }
 
-    public void setDato(Date dato) {
+    public void setDato(LocalDate dato) {
         this.dato = dato;
     }
 
@@ -76,5 +64,33 @@ public class Bookinger {
 
     public void setAntalDeltagere(int antalDeltagere) {
         this.antalDeltagere = antalDeltagere;
+    }
+
+    @Override
+    public String toString() {
+        return "Bookinger{" +
+                "id=" + id +
+                ", aktivitet=" + aktivitet +
+                ", kunde=" + kunde +
+                ", dato=" + dato +
+                ", antalDeltagere=" + antalDeltagere +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bookinger)) return false;
+        Bookinger that = (Bookinger) o;
+        return antalDeltagere == that.antalDeltagere &&
+                id.equals(that.id) &&
+                aktivitet.equals(that.aktivitet) &&
+                kunde.equals(that.kunde) &&
+                dato.equals(that.dato);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, aktivitet, kunde, dato, antalDeltagere);
     }
 }

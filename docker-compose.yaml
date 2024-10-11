@@ -20,8 +20,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: cocomelon
       MYSQL_DATABASE: Zeynos_AdventureXP
-      MYSQL_USER: root
-      MYSQL_PASSWORD: cocomelon
+      MYSQL_USER: cocomelon
+      MYSQL_PASSWORD:
     ports:
       - "3306:3306"
     restart: always

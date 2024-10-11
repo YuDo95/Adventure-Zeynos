@@ -12,24 +12,25 @@ import java.util.Optional;
 public class BookingerService {
 
     @Autowired
-    private BookingerRepository bookingerRepository;
+    private BookingerRepository bookingRepository;
 
+    // Save a booking
+    public void save(Bookinger booking) {
+        bookingRepository.save(booking);
+    }
 
+    // Find all bookings
     public List<Bookinger> findAll() {
-        return bookingerRepository.findAll();
+        return bookingRepository.findAll();
     }
 
+    // Find booking by ID
     public Optional<Bookinger> findById(int id) {
-        return bookingerRepository.findById(id);
+        return bookingRepository.findById(id);
     }
 
-
-    public Bookinger save(Bookinger booking) {
-        return bookingerRepository.save(booking);
-    }
-
-
+    // Delete booking by ID
     public void deleteById(int id) {
-        bookingerRepository.deleteById(id);
+        bookingRepository.deleteById(id);
     }
 }
