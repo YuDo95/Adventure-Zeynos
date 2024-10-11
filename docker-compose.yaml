@@ -28,6 +28,8 @@ services:
 
     ports:
       - "3307:3306"
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql  # Mount the SQL file
     networks:
       - app-network
 

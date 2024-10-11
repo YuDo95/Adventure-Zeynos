@@ -20,25 +20,25 @@ public class AktiviteterAdminController {
     public String getAllAktiviteter(Model model) {
         List<AktiviteterAdmin> aktiviteter = aktiviteterAdminService.findAll();
         model.addAttribute("aktiviteter", aktiviteter);
-        return "aktiviteteradmin"; // Returns the view name to display all activities
+        return "aktiviteteradmin";
     }
 
     @GetMapping("/{id}")
     public String getAktivitetById(@PathVariable int id, Model model) {
         AktiviteterAdmin aktivitet = aktiviteterAdminService.findById(id);
         model.addAttribute("aktivitet", aktivitet);
-        return "aktiviteteradmin"; // Returns the view name to display a specific activity's details
+        return "aktiviteteradmin";
     }
 
     @PostMapping("/create")
     public String createAktivitet(@ModelAttribute AktiviteterAdmin aktivitet) {
         aktiviteterAdminService.save(aktivitet);
-        return "redirect:/aktiviteteradmin"; // Redirects to the list of activities after creation
+        return "redirect:/aktiviteteradmin";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteAktivitet(@PathVariable int id) {
         aktiviteterAdminService.deleteById(id);
-        return "redirect:/aktiviteteradmin"; // Redirects to the list of activities after deletion
+        return "redirect:/aktiviteteradmin";
     }
 }

@@ -23,7 +23,6 @@ public class BookingerController {
     @Autowired
     private AktiviteterService aktiviteterService;
 
-    // Viser formularen til booking sammen med aktiviteter
     @GetMapping("/valg")
     public String showBookingForm(Model model) {
         List<Aktiviteter> aktiviteter = aktiviteterService.getAllAktiviteter();
@@ -31,22 +30,20 @@ public class BookingerController {
         return "bookinger";
     }
 
-    // Gemmer en ny booking baseret på e-mail i stedet for kunde_id
     @PostMapping("/save")
     public String createBooking(@RequestParam("email") String email, @ModelAttribute Bookinger booking, Model model) {
         Optional<Kunder> kunde = bookingService.findCustomerByEmail(email);
 
         if (kunde.isPresent()) {
-            booking.setKunde(kunde.get());  // Sætter kunde_id baseret på e-mail
-            bookingService.save(booking);  // Gemmer bookingen
-            return "redirect:/bookinger";  // Redirecter til bookingsiden efter gemning
+            booking.setKunde(kunde.get());
+            bookingService.save(booking);
+            return "redirect:/bookinger";
         } else {
             model.addAttribute("errorMessage", "Kunde med e-mailen findes ikke.");
-            return "bookinger";  // Returnerer til samme side med fejlmeddelelse
+            return "bookinger";
         }
     }
 
-    // Henter alle bookinger
     @GetMapping
     public String getAllBookings(Model model) {
         List<Bookinger> bookings = bookingService.findAll();

@@ -51,10 +51,7 @@ public class KunderController {
 
     @PostMapping("/kunder/save")
     public ResponseEntity<?> saveKunde(@RequestBody Kunder kunde) {
-        // Save the new customer to the database
         Kunder savedKunde = kundeService.save(kunde);
-
-        // Now you can use savedKunde.getId() to get the auto-generated ID
         return ResponseEntity.ok(savedKunde);
     }
 
@@ -62,9 +59,9 @@ public class KunderController {
     public ResponseEntity<Void> checkCustomerExists(@RequestParam String email) {
         boolean exists = kundeService.existsByEmail(email);
         if (exists) {
-            return ResponseEntity.ok().build(); // Return 200 OK if exists
+            return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found if not exists
+            return ResponseEntity.notFound().build();
         }
     }
 

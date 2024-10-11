@@ -22,7 +22,7 @@ public class AktiviteterAdmin {
     @Column(name = "age_limit")
     private String ageLimit;
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }

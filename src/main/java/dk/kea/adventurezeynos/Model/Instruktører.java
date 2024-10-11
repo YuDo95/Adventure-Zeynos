@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "medarbejder")  // Use the Medarbejder table instead of Instruktører
+@Table(name = "medarbejder")
 public class Instruktører {
 
     @Id
@@ -17,7 +17,7 @@ public class Instruktører {
     private String navn;
     private String kode;
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }

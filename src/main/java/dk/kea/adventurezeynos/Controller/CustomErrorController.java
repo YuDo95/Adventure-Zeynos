@@ -9,6 +9,6 @@ public class CustomErrorController implements ErrorController {
 
     @GetMapping("/error")
     public String handleError() {
-        return "error"; // Create an error.html template to display custom error messages
+        return "error";
     }
 }

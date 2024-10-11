@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InstruktørerRepository extends JpaRepository<Instruktører, Integer> {
-    // No additional methods are needed for findAll()
 }
