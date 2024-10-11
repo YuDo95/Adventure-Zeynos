@@ -23,7 +23,6 @@ public class BookingAdminController {
         return "bookingeradmin"; // Name of the HTML template for admin view
     }
 
-
     @GetMapping("/delete/{id}")
     public String deleteBooking(@PathVariable("id") int id) {
         bookingerService.deleteById(id);

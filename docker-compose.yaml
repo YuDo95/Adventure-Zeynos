@@ -20,10 +20,12 @@ services:
     image: mysql:8
     container_name: adventure-zeyno-db
     environment:
+
       MYSQL_ROOT_PASSWORD: 12Qwe++!
       MYSQL_DATABASE: adventurexp
       MYSQL_USER: cocomelon
       MYSQL_PASSWORD: cocomelon
+
     ports:
       - "3307:3306"
     networks:

@@ -1,6 +1,9 @@
 package dk.kea.adventurezeynos.Controller;
 
+import dk.kea.adventurezeynos.Model.Aktiviteter;
 import dk.kea.adventurezeynos.Model.Bookinger;
+import dk.kea.adventurezeynos.Model.Kunder;
+import dk.kea.adventurezeynos.Service.AktiviteterService;
 import dk.kea.adventurezeynos.Service.BookingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bookinger")
@@ -16,37 +20,37 @@ public class BookingerController {
     @Autowired
     private BookingerService bookingService;
 
-    // Show all bookings (optional)
+    @Autowired
+    private AktiviteterService aktiviteterService;
+
+    // Viser formularen til booking sammen med aktiviteter
+    @GetMapping("/valg")
+    public String showBookingForm(Model model) {
+        List<Aktiviteter> aktiviteter = aktiviteterService.getAllAktiviteter();
+        model.addAttribute("aktiviteter", aktiviteter);
+        return "bookinger";
+    }
+
+    // Gemmer en ny booking baseret på e-mail i stedet for kunde_id
+    @PostMapping("/save")
+    public String createBooking(@RequestParam("email") String email, @ModelAttribute Bookinger booking, Model model) {
+        Optional<Kunder> kunde = bookingService.findCustomerByEmail(email);
+
+        if (kunde.isPresent()) {
+            booking.setKunde(kunde.get());  // Sætter kunde_id baseret på e-mail
+            bookingService.save(booking);  // Gemmer bookingen
+            return "redirect:/bookinger";  // Redirecter til bookingsiden efter gemning
+        } else {
+            model.addAttribute("errorMessage", "Kunde med e-mailen findes ikke.");
+            return "bookinger";  // Returnerer til samme side med fejlmeddelelse
+        }
+    }
+
+    // Henter alle bookinger
     @GetMapping
     public String getAllBookings(Model model) {
         List<Bookinger> bookings = bookingService.findAll();
         model.addAttribute("bookings", bookings);
-        return "bookinger"; // Return the view name for displaying bookings
-    }
-
-    // Show the booking form (if you have a separate form view)
-    @GetMapping("/new")
-    public String showBookingForm(Model model) {
-        // You can add any necessary data for the form here
-        return "newBooking"; // Return the view name for the booking form
-    }
-
-    // Save a new booking
-    @PostMapping("/save")
-    public String createBooking(@ModelAttribute Bookinger booking) {
-        bookingService.save(booking);
-        return "redirect:/bookinger"; // Redirect to the list of bookings after saving
-    }
-
-    // Get booking by ID
-    @GetMapping("/{id}")
-    public Bookinger getBookingById(@PathVariable int id) {
-        return bookingService.findById(id).orElse(null);
-    }
-
-    // Delete booking by ID
-    @DeleteMapping("/delete/{id}")
-    public void deleteBooking(@PathVariable int id) {
-        bookingService.deleteById(id);
+        return "bookinger";
     }
 }
