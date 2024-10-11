@@ -1,27 +1,34 @@
 package dk.kea.adventurezeynos.Service;
-
 import dk.kea.adventurezeynos.Model.Medarbejder;
 import dk.kea.adventurezeynos.Repository.MedarbejdereRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class MedarbejdereService {
 
+    private final MedarbejdereRepository medarbejdereRepository;
+
     @Autowired
-    private static MedarbejdereRepository medarbejdereRepository;
+    public MedarbejdereService(MedarbejdereRepository medarbejdereRepository) {
+        this.medarbejdereRepository = medarbejdereRepository;
+    }
 
     public List<Medarbejder> findAll() {
         return medarbejdereRepository.findAll();
     }
-    public static boolean validateUser(String navn, String kode) {
-        return medarbejdereRepository.validateUser(navn, kode);
+
+    public boolean validateUser(String navn, String kode) {
+        boolean exists = medarbejdereRepository.existsByNavnAndKode(navn, kode);
+        System.out.println("Login Attempt: " + navn + ", " + kode + " -> " + exists);
+        return exists;
     }
 
-    public Medarbejder findById(int id) {
-        return medarbejdereRepository.findById(id).orElse(null);
+    public Optional<Medarbejder> findById(int id) {
+        return medarbejdereRepository.findById(id);
     }
 
     public void save(Medarbejder medarbejder) {

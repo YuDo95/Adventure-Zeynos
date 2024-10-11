@@ -8,9 +8,14 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            background-image: url('https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg');
+            background-image: url('https://wallpapercave.com/wp/wp2757874.gif'); /* Updated GIF background */
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Ensure the GIF doesn't repeat */
             padding: 20px;
             position: relative; /* Allows for absolute positioning of the button */
+            height: 100vh; /* Make the body full height */
+            margin: 0; /* Remove default margin */
         }
 
         h1 {
@@ -20,7 +25,7 @@
         .booking-container {
             max-width: 600px;
             margin: 0 auto;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -71,11 +76,33 @@
         .back-button:hover {
             background-color: #d4a600; /* Darker blue on hover */
         }
+
+        /* Cancel booking button styling */
+        .cancel-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .cancel-button:hover {
+            background-color: #cc4629;
+        }
     </style>
 </head>
 <body>
 
 <a href="http://localhost:8080/kunde/kundeOprettelse" class="back-button">Gå tilbage</a> <!-- Back button at the top left -->
+
+<!-- Cancel Booking Button -->
+<a href="/contact" class="cancel-button" id="cancelButton">Annuler Booking</a> <!-- Cancel button at the top right -->
 
 <div class="booking-container">
     <h1>Book en Aktivitet</h1>
