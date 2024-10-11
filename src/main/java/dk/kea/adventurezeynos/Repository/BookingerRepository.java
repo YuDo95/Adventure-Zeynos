@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookingerRepository extends JpaRepository<Bookinger, Integer> {
+    // Custom query methods (if needed) can be defined here
 }

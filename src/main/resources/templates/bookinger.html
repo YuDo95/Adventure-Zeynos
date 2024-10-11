@@ -76,11 +76,33 @@
         .back-button:hover {
             background-color: #d4a600; /* Darker blue on hover */
         }
+
+        /* Cancel booking button styling */
+        .cancel-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .cancel-button:hover {
+            background-color: #cc4629;
+        }
     </style>
 </head>
 <body>
 
 <a href="http://localhost:8080/kunde/kundeOprettelse" class="back-button">Gå tilbage</a> <!-- Back button at the top left -->
+
+<!-- Cancel Booking Button -->
+<a href="/contact" class="cancel-button" id="cancelButton">Annuler Booking</a> <!-- Cancel button at the top right -->
 
 <div class="booking-container">
     <h1>Book en Aktivitet</h1>
