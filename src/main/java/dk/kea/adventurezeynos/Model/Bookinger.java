@@ -16,15 +16,12 @@ public class Bookinger {
     @ManyToOne
     private Kunder kunde;
 
-    private LocalDate dato; // Changed from Date to LocalDate
+    private LocalDate dato;
 
     private int antalDeltagere;
 
-    // Default constructor
     public Bookinger() {
     }
-
-    // Getters and Setters
 
     public Integer getId() {
         return id;

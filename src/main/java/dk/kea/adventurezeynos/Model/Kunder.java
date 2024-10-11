@@ -7,27 +7,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "kunder")  // Map to the "kunder" table in the database
+@Table(name = "kunder")
 public class Kunder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment primary key
-    private int id;  // This is the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String navn;
     private String email;
-    private String telefon_nummer;  // Added field for phone number
+    private String telefon_nummer;
 
-    // Constructors
+
     public Kunder() {}
 
     public Kunder(String navn, String email, String telefon_nummer) {
         this.navn = navn;
         this.email = email;
-        this.telefon_nummer = telefon_nummer;  // Initialize phone number
+        this.telefon_nummer = telefon_nummer;
     }
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -53,10 +53,10 @@ public class Kunder {
     }
 
     public String getTelefon_nummer() {
-        return telefon_nummer;  // Getter for phone number
+        return telefon_nummer;
     }
 
     public void setTelefon_nummer(String telefon_nummer) {
-        this.telefon_nummer = telefon_nummer;  // Setter for phone number
+        this.telefon_nummer = telefon_nummer;
     }
 }

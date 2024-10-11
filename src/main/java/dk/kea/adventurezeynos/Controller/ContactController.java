@@ -8,7 +8,6 @@ public class ContactController {
 
     @GetMapping("/contact")
     public String getContactPage() {
-        // This will return the contact.html template
         return "contact";
     }
 }

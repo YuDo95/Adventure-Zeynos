@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book en Aktivitet - AdventureXP</title>
     <style>
-        /* Grundlæggende styling for layout og baggrund */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            background-image: url('https://gokart.dk/wp-content/uploads/kontaktosbanner.jpg');
+            background-image: url(https://wallpapercave.com/wp/wp2757874.gif);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             padding: 20px;
             position: relative;
         }
 
-        /* Centerer titlen */
         h1 {
             text-align: center;
         }
 
-        /* Styling af container til bookingformularen */
         .booking-container {
             max-width: 600px;
             margin: 0 auto;
@@ -29,14 +30,14 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Styling for label og input-felter */
+
         label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
         }
 
-        /* Ens styling for alle input-felter */
+
         input, select {
             width: 100%;
             padding: 10px;
@@ -45,7 +46,6 @@
             border-radius: 5px;
         }
 
-        /* Knappen til at bekræfte booking */
         button {
             width: 100%;
             padding: 15px;
@@ -57,12 +57,11 @@
             cursor: pointer;
         }
 
-        /* Ændrer baggrundsfarven, når man holder musen over knappen */
         button:hover {
             background-color: #e6b800;
         }
 
-        /* Styling af "tilbage"-knappen */
+
         .back-button {
             position: absolute;
             top: 20px;
@@ -74,7 +73,6 @@
             text-decoration: none;
         }
 
-        /* Ændrer farve på "tilbage"-knappen ved hover */
         .back-button:hover {
             background-color: #d4a600;
         }
@@ -87,7 +85,7 @@
 <div class="booking-container">
     <h1>Book en Aktivitet</h1>
     <form action="/bookinger/save" method="post" id="bookingForm">
-        <!-- Dropdown til at vælge aktivitet -->
+
         <label for="aktivitet">Vælg Aktivitet:</label>
         <select id="aktivitet" name="aktivitet_id" required>
             <option value="" disabled selected>Vælg aktivitet</option>
@@ -96,57 +94,55 @@
             </th:block>
         </select>
 
-        <!-- Felt til at vælge dato -->
+
         <label for="dato">Vælg Dato:</label>
         <input type="date" id="dato" name="dato" required>
 
-        <!-- Felt til at vælge tid -->
         <label for="tid">Vælg Tid:</label>
         <input type="time" id="tid" name="tid" required>
 
-        <!-- Inputfelt til antal deltagere -->
+
         <label for="deltagere">Antal Deltagere:</label>
         <input type="number" id="deltagere" name="antalDeltagere" min="1" max="20" required>
 
-        <!-- Felt til at angive email -->
+
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
 
         <button type="submit">Bekræft Booking</button>
     </form>
 
-    <!-- Besked der vises efter en succesfuld booking -->
     <div id="confirmationMessage" style="display:none; margin-top: 20px;">
         <p>Tak for din booking! Vi har modtaget din reservation.</p>
     </div>
 </div>
 
 <script>
-    // Håndtering af formularens 'submit' event
+
     document.getElementById('bookingForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Forhindrer sideopdatering
+        event.preventDefault();
         const aktivitetId = document.getElementById('aktivitet').value;
         const dato = document.getElementById('dato').value;
         const tid = document.getElementById('tid').value;
         const deltagere = document.getElementById('deltagere').value;
         const email = document.getElementById('email').value;
 
-        // Data til booking
+
         const bookingData = {
             aktivitet_id: aktivitetId,
-            dato: `${dato}T${tid}`, // Kombinerer dato og tid
-            antalDeltagere: deltagere, // Sørger for, at det matcher det, controlleren forventer
-            email: email // Email til at finde kunden
+            dato: `${dato}T${tid}`,
+            antalDeltagere: deltagere,
+            email: email
         };
 
-        // Sender data til serveren
+
         fetch('/bookinger/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bookingData),
         }).then(response => {
             if (response.ok) {
-                // Nulstiller formularen og viser en bekræftelsesbesked
+
                 document.getElementById('bookingForm').reset();
                 document.getElementById('confirmationMessage').style.display = 'block';
             } else {

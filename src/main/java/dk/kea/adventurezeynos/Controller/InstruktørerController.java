@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/instruktorer")  // Keep the request mapping as instruktorer
+@RequestMapping("/instruktorer")
 public class InstruktørerController {
 
     @Autowired
@@ -20,25 +20,25 @@ public class InstruktørerController {
     public String getAllInstruktører(Model model) {
         List<Instruktører> instruktører = instruktørerService.findAll();
         model.addAttribute("instruktører", instruktører);
-        return "instruktorer"; // Returns the view name to display all instructors
+        return "instruktorer";
     }
 
     @GetMapping("/{id}")
     public String getInstruktørById(@PathVariable int id, Model model) {
         Instruktører instruktør = instruktørerService.findById(id);
         model.addAttribute("instruktør", instruktør);
-        return "instruktør-details"; // Returns the view name to display a specific instructor's details
+        return "instruktør-details";
     }
 
     @PostMapping("/create")
     public String createInstruktør(@ModelAttribute Instruktører instruktør) {
         instruktørerService.save(instruktør);
-        return "redirect:/instruktorer"; // Redirects to the list of instructors after creation
+        return "redirect:/instruktorer";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteInstruktør(@PathVariable int id) {
         instruktørerService.deleteById(id);
-        return "redirect:/instruktorer"; // Redirects to the list of instructors after deletion
+        return "redirect:/instruktorer";
     }
 }
