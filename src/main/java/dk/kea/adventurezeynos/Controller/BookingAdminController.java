@@ -20,12 +20,12 @@ public class BookingAdminController {
     public String getAllBookings(Model model) {
         List<Bookinger> bookingerList = bookingerService.findAll();
         model.addAttribute("bookingerList", bookingerList);
-        return "bookingeradmin"; // Name of the HTML template for admin view
+        return "bookingeradmin";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteBooking(@PathVariable("id") int id) {
         bookingerService.deleteById(id);
-        return "redirect:/bookinger/admin"; // Redirect to the admin view after deletion
+        return "redirect:/bookinger/admin";
     }
 }

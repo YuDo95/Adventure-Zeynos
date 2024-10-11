@@ -18,6 +18,6 @@ public class AktiviteterController {
     @GetMapping("/aktiviteter")
     public String getAktiviteter(Model model) {
         model.addAttribute("aktiviteter", aktiviteterService.getAllAktiviteter());
-        return "aktiviteter"; // Return the name of the HTML template
+        return "aktiviteter";
     }
 }

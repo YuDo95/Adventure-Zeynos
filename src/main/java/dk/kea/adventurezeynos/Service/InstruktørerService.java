@@ -29,6 +29,6 @@ public class InstruktørerService {
     }
 
     public List<Instruktører> findAll() {
-        return instruktørerRepository.findAll(); // Fetch all employees from the repository
+        return instruktørerRepository.findAll();
     }
 }

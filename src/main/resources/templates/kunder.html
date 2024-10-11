@@ -28,7 +28,7 @@
 <body>
 <h1>Kunder</h1>
 
-<!-- Table for displaying customers -->
+
 <table id="kunderTable">
     <thead>
     <tr>
@@ -39,11 +39,11 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Rows will be dynamically added here -->
+
     </tbody>
 </table>
 
-<!-- Form for creating a new customer -->
+
 <h2>Create New Customer</h2>
 <form id="createCustomerForm">
     <label for="navn">Navn:</label>
@@ -54,18 +54,18 @@
 </form>
 
 <script>
-    // Load customers when the page loads
+
     window.onload = function() {
         loadCustomers();
     };
 
-    // Fetch all customers from the backend
+
     function loadCustomers() {
         fetch('/kunder')
             .then(response => response.json())
             .then(data => {
                 const kunderTableBody = document.querySelector("#kunderTable tbody");
-                kunderTableBody.innerHTML = ''; // Clear existing rows
+                kunderTableBody.innerHTML = '';
                 data.forEach(kunde => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
@@ -81,30 +81,30 @@
             });
     }
 
-    // Handle form submission to create a new customer
+
     document.getElementById("createCustomerForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
-        // Create FormData object from the form inputs
+
         const formData = new FormData(this);
 
         fetch('/kunder/create', {
             method: 'POST',
-            body: new URLSearchParams(formData) // Submit form data as URL-encoded
+            body: new URLSearchParams(formData)
         })
             .then(response => response.json())
             .then(() => {
-                loadCustomers(); // Reload customer list after creating a new one
+                loadCustomers();
             });
     });
 
-    // Delete a customer
+
     function deleteCustomer(id) {
         fetch(`/kunder/delete/${id}`, {
             method: 'POST'
         })
             .then(() => {
-                loadCustomers(); // Reload customer list after deletion
+                loadCustomers();
             });
     }
 </script>

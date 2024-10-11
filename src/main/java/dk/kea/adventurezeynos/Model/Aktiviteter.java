@@ -12,18 +12,18 @@ public class Aktiviteter {
 
     private String navn;
 
-    @Column(name = "instruktør_id") // Maps to 'instruktør_id' in the database
+    @Column(name = "instruktør_id")
     private int instruktorId;
 
-    @Column(name = "picture_url") // Maps to 'picture_url' in the database
+    @Column(name = "picture_url")
     private String pictureUrl;
 
     private String beskrivelse;
 
-    @Column(name = "age_limit") // Maps to 'age_limit' in the database
+    @Column(name = "age_limit")
     private String ageLimit;
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }

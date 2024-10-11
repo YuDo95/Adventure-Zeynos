@@ -8,12 +8,12 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
-      background-image: url(https://wallpapercave.com/wp/wp2757874.gif); /* New background image */
-      background-size: cover; /* Cover the entire background */
-      background-position: center; /* Center the image */
-      background-repeat: no-repeat; /* Prevent the image from repeating */
+      background-image: url(https://wallpapercave.com/wp/wp2757874.gif);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       padding: 20px;
-      position: relative; /* Allows for absolute positioning of the button */
+      position: relative;
     }
 
     h1 {
@@ -59,23 +59,22 @@
     }
 
     .back-button {
-      position: absolute; /* Allows the button to be positioned at the top left */
-      top: 20px; /* Space from the top */
-      left: 20px; /* Space from the left */
+      position: absolute;
+      top: 20px;
+      left: 20px;
       padding: 10px;
-      background-color: #FFCC00; /* Background color */
+      background-color: #FFCC00;
       color: white;
-      text-align: center; /* Centers text within the button */
-      text-decoration: none; /* Removes underline from link */
+      text-align: center;
+      text-decoration: none;
       border-radius: 5px;
       transition: background-color 0.2s ease;
     }
 
     .back-button:hover {
-      background-color: #e6b800; /* Darker yellow on hover */
+      background-color: #e6b800;
     }
 
-    /* Cancel booking button styling */
     .cancel-button {
       position: absolute;
       top: 20px;
@@ -96,63 +95,49 @@
   </style>
 </head>
 <body>
-
-<a href="http://localhost:8080/" class="back-button">Gå tilbage</a> <!-- Back button at the top left -->
-
-<!-- Cancel Booking Button -->
-<a href="/contact" class="cancel-button" id="cancelButton">Annuler Booking</a> <!-- Cancel button at the top right -->
+<a href="http://localhost:8080/" class="back-button">Gå tilbage</a>
+<a href="/contact" class="cancel-button" id="cancelButton">Annuler Booking</a>
 
 <div class="customer-container">
   <h1>Opret Ny Kunde</h1>
   <form id="customerForm">
     <label for="navn">Navn:</label>
     <input type="text" id="navn" name="navn" required>
-
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
-
     <label for="telefon_nummer">Telefonnummer:</label>
     <input type="text" id="telefon_nummer" name="telefon_nummer" required>
-
     <button type="submit">Opret Kunde</button>
   </form>
-
   <div id="confirmationMessage" style="display:none; margin-top: 20px;">
     <p>Tak! Kunden er oprettet.</p>
   </div>
-
   <hr>
-
   <h1>Tjek Eksisterende Kunde</h1>
   <form id="existingCustomerForm">
     <label for="existingEmail">Email:</label>
     <input type="email" id="existingEmail" name="existingEmail" required>
-
     <button type="submit">Tjek Kunde</button>
   </form>
-
   <div id="existingCustomerMessage" style="display:none; margin-top: 20px;">
     <p>Denne mail eksisterer i systemet!</p>
   </div>
 </div>
 
 <script>
-  // New customer form submission
+
   document.getElementById('customerForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
     const navn = document.getElementById('navn').value;
     const email = document.getElementById('email').value;
     const telefonNummer = document.getElementById('telefon_nummer').value;
 
-    // Form data that will be sent to the server
     const customerData = {
       navn: navn,
       email: email,
       telefon_nummer: telefonNummer
     };
 
-    // Sending the customer data to the server
     fetch('/kunde/kunder/save', {
       method: 'POST',
       headers: {
@@ -162,13 +147,10 @@
     })
             .then(response => {
               if (response.ok) {
-                // Clear form
                 document.getElementById('customerForm').reset();
-                // Show confirmation message
                 document.getElementById('confirmationMessage').style.display = 'block';
-                // Redirect to bookinger.html after a short delay
                 setTimeout(() => {
-                  window.location.href = '/bookinger';
+                  window.location.href = '/bookinger/valg';
                 }, 1000);
               } else {
                 alert('Der opstod en fejl med oprettelsen af kunden. Prøv igen.');
@@ -176,24 +158,20 @@
             });
   });
 
-  // Existing customer form submission
+
   document.getElementById('existingCustomerForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
     const existingEmail = document.getElementById('existingEmail').value;
 
-    // Check if the customer exists in the database
     fetch(`/kunde/check?email=${encodeURIComponent(existingEmail)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      },
+      }
     })
             .then(response => {
               if (response.ok) {
-                // Show message if the customer exists
                 document.getElementById('existingCustomerMessage').style.display = 'block';
-                // Redirect to bookinger.html after a short delay
                 setTimeout(() => {
                   window.location.href = '/bookinger/valg';
                 }, 1000);
@@ -203,6 +181,5 @@
             });
   });
 </script>
-
 </body>
 </html>

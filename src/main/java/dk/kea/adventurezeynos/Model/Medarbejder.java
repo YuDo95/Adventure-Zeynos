@@ -7,11 +7,11 @@ public class Medarbejder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;  // Changed to int
+    private int id;
     private String navn;
     private String kode;
 
-    // Getters and Setters
+
     public int getId() {  // Changed Long to int
         return id;
     }

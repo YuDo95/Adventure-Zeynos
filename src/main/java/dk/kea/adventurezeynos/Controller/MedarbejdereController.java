@@ -22,7 +22,7 @@ public class MedarbejdereController {
 
     @GetMapping("/medarbejderlogin")
     public String loginPage() {
-        return "login"; // Show login page
+        return "login";
     }
 
     @PostMapping("/login")
@@ -31,7 +31,7 @@ public class MedarbejdereController {
                         Model model) {
         try {
             if (medarbejdereService.validateUser(navn, kode)) {
-                return "redirect:/dashboard"; // Redirect to dashboard if login is valid
+                return "redirect:/dashboard";
             } else {
                 model.addAttribute("error", "Forkert navn eller kode.");
                 return "login";
@@ -45,6 +45,6 @@ public class MedarbejdereController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "medarbejderdashboard"; // Show the dashboard after login
+        return "medarbejderdashboard";
     }
 }
