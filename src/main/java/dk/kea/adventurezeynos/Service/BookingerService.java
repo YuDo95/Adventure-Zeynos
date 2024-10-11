@@ -1,7 +1,9 @@
 package dk.kea.adventurezeynos.Service;
 
 import dk.kea.adventurezeynos.Model.Bookinger;
+import dk.kea.adventurezeynos.Model.Kunder;
 import dk.kea.adventurezeynos.Repository.BookingerRepository;
+import dk.kea.adventurezeynos.Repository.KunderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +14,33 @@ import java.util.Optional;
 public class BookingerService {
 
     @Autowired
-    private BookingerRepository bookingRepository;
+    private BookingerRepository bookingerRepository;
 
-    // Save a booking
-    public void save(Bookinger booking) {
-        bookingRepository.save(booking);
-    }
+    @Autowired
+    private KunderRepository kunderRepository;
 
-    // Find all bookings
+    // Henter alle bookinger fra databasen
     public List<Bookinger> findAll() {
-        return bookingRepository.findAll();
+        return bookingerRepository.findAll();
     }
 
-    // Find booking by ID
+    // Finder en specifik booking ved ID
     public Optional<Bookinger> findById(int id) {
-        return bookingRepository.findById(id);
+        return bookingerRepository.findById(id);
     }
 
-    // Delete booking by ID
+    // Gemmer eller opdaterer en booking
+    public Bookinger save(Bookinger booking) {
+        return bookingerRepository.save(booking);
+    }
+
+    // Finder en kunde baseret på e-mail
+    public Optional<Kunder> findCustomerByEmail(String email) {
+        return kunderRepository.findByEmail(email);
+    }
+
+    // Sletter en booking baseret på ID
     public void deleteById(int id) {
-        bookingRepository.deleteById(id);
+        bookingerRepository.deleteById(id);
     }
 }
